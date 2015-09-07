@@ -18,19 +18,25 @@ public class KnapsackOptimizer {
                 int prevMaxValue = values[i - 1][j];
                 if (itemWeight <= j) {
                     int itemValue = items[i - 1].value;
-                    values[i][j] = Math.max (prevMaxValue, values[i-1][j- itemWeight] + itemValue);
+                    values[i][j] = Math.max (prevMaxValue, values[i-1][j-itemWeight] + itemValue);
                 } else {
                     values[i][j] = prevMaxValue;
                 }
             }
         }
 
+        List<Integer> chosenItems = findChosenItems (items, capacity, values);
+        return chosenItems;
+    }
+
+    private static List<Integer> findChosenItems (Item[] items, int capacity, int[][] values) {
         List<Integer> chosenItems = new ArrayList<> ();
         int currValue = values[items.length][capacity];
         int itemIndex = items.length;
         int weightIndex = capacity;
         while (currValue != 0) {
-            if (currValue != values[itemIndex - 1][weightIndex]) {
+            boolean itemAdded = currValue != values[itemIndex - 1][weightIndex];
+            if (itemAdded) {
                 chosenItems.add (itemIndex-1);
                 weightIndex -= items[itemIndex-1].weight;
             }
@@ -45,7 +51,6 @@ public class KnapsackOptimizer {
         public final int weight;
 
         public Item (int value, int weight) {
-
             this.value = value;
             this.weight = weight;
         }
