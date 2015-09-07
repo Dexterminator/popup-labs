@@ -10,9 +10,11 @@ import java.util.List;
 public class IntervalCover {
 
     public static List<Integer> intervalCover (Interval goal, Interval[] intervals) {
+
         Arrays.sort (intervals);
-        Interval best = new Interval (Float.MAX_VALUE, Float.MIN_VALUE, Integer.MIN_VALUE);
         List<Integer> solution = new ArrayList<> ();
+        /*
+        Interval best = new Interval (Float.MAX_VALUE, Float.MIN_VALUE, Integer.MIN_VALUE);
         int bestIndex = Integer.MIN_VALUE;
         float highest = Float.MIN_VALUE;
         for (int i = 0; i < intervals.length; i++) {
@@ -35,9 +37,49 @@ public class IntervalCover {
 
         Interval currentBest = best;
         Interval currentBestImprovement = best;
+        */
+        if(intervals[0].high < goal.high){
+            return null;
+        }
+        double prev;
+        double start = goal.low;
+        if(goal.low == goal.high){
+            swag : while(start <= goal.high){
+                prev = start;
+                for (Interval interval: intervals){
+                    if(interval.low <= start){
+                        solution.add(interval.index);
+                        start = interval.high;
 
-        int currentIndex = bestIndex + 1;
-        boolean improved;
+                        if(interval.high >= goal.high){
+                            break swag;
+                        }
+                        break;
+                    }
+                }
+                if(prev == start){
+                    return null;
+                }
+
+            }
+            return solution;
+        }
+
+        while(start < goal.high){
+            prev = start;
+            for (Interval interval: intervals){
+                if(interval.low <= start){
+                    solution.add(interval.index);
+                    start = interval.high;
+                    break;
+                }
+            }
+            if(prev == start){
+                return null;
+            }
+
+        }
+        return solution;
 //        while (currentBest.high < goal.high) {
 //            improved = false;
 //            for (int i = currentIndex; i < intervals.length; i++) {
@@ -63,7 +105,7 @@ public class IntervalCover {
 //            }
 //        }
 //        return getSolutionArray (solution);
-
+        /*
         for (int i = bestIndex; i < intervals.length; i++) {
             if (intervals[i].low <= currentBest.high) {
                 if (intervals[i].high > currentBestImprovement.high) {
@@ -90,6 +132,7 @@ public class IntervalCover {
         }
 
         return null;
+        */
     }
 
     private static int[] getSolutionArray (List<Interval> solution) {
@@ -100,11 +143,11 @@ public class IntervalCover {
     }
 
     public static class Interval implements Comparable<Interval> {
-        public final float low;
-        public final float high;
+        public final double low;
+        public final double high;
         public final int index;
 
-        public Interval (float low, float high, int index) {
+        public Interval (double low, double high, int index) {
             this.low = low;
             this.high = high;
             this.index = index;
@@ -120,9 +163,9 @@ public class IntervalCover {
 
         @Override
         public int compareTo (Interval other) {
-            if (low == other.low)
+            if (high == other.high)
                 return 0;
-            return low > other.low ? 1 : -1;
+            return high > other.high ? -1 : 1;
         }
     }
 }

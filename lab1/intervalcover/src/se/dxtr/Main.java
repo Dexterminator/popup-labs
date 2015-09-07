@@ -8,24 +8,25 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner s = new Scanner (System.in);
-        while (s.hasNext ()) {
-            IntervalCover.Interval goal = new IntervalCover.Interval (s.nextFloat (), s.nextFloat (), Integer.MIN_VALUE);
-            int n = s.nextInt ();
+        Kattio io = new Kattio(System.in, System.out);
+        while (io.hasMoreTokens()) {
+            IntervalCover.Interval goal = new IntervalCover.Interval (io.getDouble(), io.getDouble(), Integer.MIN_VALUE);
+            int n = io.getInt ();
             IntervalCover.Interval[] intervals = new IntervalCover.Interval[n];
             for (int i = 0; i < n; i++) {
-                intervals[i] = new IntervalCover.Interval (s.nextFloat (), s.nextFloat (), i);
+                intervals[i] = new IntervalCover.Interval (io.getDouble(), io.getDouble(), i);
             }
             List<Integer> solution = IntervalCover.intervalCover (goal, intervals);
             if (solution != null) {
                 String collect = solution.stream().map (idx -> String.valueOf (idx)).collect (Collectors.joining (" "));
-                System.out.println (solution.size ());
-                System.out.println (collect);
+                io.println (solution.size ());
+                io.println (collect);
             } else {
-                System.out.println ("impossible");
+                io.println ("impossible");
             }
-
+            io.flush();
         }
+        io.close();
     }
 
 }
