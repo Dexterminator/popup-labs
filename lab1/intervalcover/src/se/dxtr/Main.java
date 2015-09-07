@@ -1,6 +1,7 @@
 package se.dxtr;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -15,10 +16,10 @@ public class Main {
             for (int i = 0; i < n; i++) {
                 intervals[i] = new IntervalCover.Interval (s.nextFloat (), s.nextFloat (), i);
             }
-            int[] solution = IntervalCover.intervalCover (goal, intervals);
+            List<Integer> solution = IntervalCover.intervalCover (goal, intervals);
             if (solution != null) {
-                String collect = Arrays.stream (solution).mapToObj (idx -> String.valueOf (idx)).collect (Collectors.joining (" "));
-                System.out.println (solution.length);
+                String collect = solution.stream().map (idx -> String.valueOf (idx)).collect (Collectors.joining (" "));
+                System.out.println (solution.size ());
                 System.out.println (collect);
             } else {
                 System.out.println ("impossible");

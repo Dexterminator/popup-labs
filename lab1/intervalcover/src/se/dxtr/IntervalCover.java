@@ -9,10 +9,10 @@ import java.util.List;
  */
 public class IntervalCover {
 
-    public static int[] intervalCover (Interval goal, Interval[] intervals) {
+    public static List<Integer> intervalCover (Interval goal, Interval[] intervals) {
         Arrays.sort (intervals);
         Interval best = new Interval (Float.MAX_VALUE, Float.MIN_VALUE, Integer.MIN_VALUE);
-        List<Interval> solution = new ArrayList<> ();
+        List<Integer> solution = new ArrayList<> ();
         int bestIndex = Integer.MIN_VALUE;
         float highest = Float.MIN_VALUE;
         for (int i = 0; i < intervals.length; i++) {
@@ -29,9 +29,9 @@ public class IntervalCover {
         if (bestIndex == Integer.MIN_VALUE)
             return null;
 
-        solution.add (best);
+        solution.add (best.index);
         if (best.high >= goal.high)
-            return getSolutionArray (solution);
+            return solution;
 
         Interval currentBest = best;
         Interval currentBestImprovement = best;
@@ -64,26 +64,25 @@ public class IntervalCover {
 //        }
 //        return getSolutionArray (solution);
 
-
         for (int i = bestIndex; i < intervals.length; i++) {
             if (intervals[i].low <= currentBest.high) {
                 if (intervals[i].high > currentBestImprovement.high) {
                     currentBestImprovement = intervals[i];
                 }
             } else {
-                solution.add (currentBestImprovement);
+                solution.add (currentBestImprovement.index);
                 if (i == intervals.length - 1) {
                     currentBest = currentBestImprovement;
                     if (intervals[i].low <= currentBest.high) {
                         if (intervals[i].high > currentBestImprovement.high) {
-                            solution.add(intervals[i]);
+                            solution.add(i);
                             currentBestImprovement = intervals[i];
                         }
                     }
                 }
 
                 if (currentBestImprovement.high >= goal.high)
-                    return getSolutionArray (solution);
+                    return solution;
                 currentBest = currentBestImprovement;
 //                if (intervals[i].high > currentBestImprovement.high)
 //                    currentBestImprovement = intervals[i];
