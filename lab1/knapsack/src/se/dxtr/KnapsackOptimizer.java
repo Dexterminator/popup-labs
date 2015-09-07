@@ -25,7 +25,7 @@ public class KnapsackOptimizer {
             }
         }
 
-        List<Integer> chosenItems = new ArrayList<Integer> ();
+        List<Integer> chosenItems = new ArrayList<> ();
         int currValue = values[items.length][capacity];
         int itemIndex = items.length;
         int weightIndex = capacity;

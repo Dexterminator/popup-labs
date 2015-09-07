@@ -16,7 +16,7 @@ public class Main {
             }
             List<Integer> chosenItems = KnapsackOptimizer.knapsack (capacity, items);
             io.println (chosenItems.size ());
-            io.println (chosenItems.stream ().map (i -> String.valueOf (i)).collect (Collectors.joining (" ")));
+            io.println (chosenItems.stream ().map (i -> i.toString ()).collect (Collectors.joining (" ")));
             io.flush ();
         }
         io.close ();
