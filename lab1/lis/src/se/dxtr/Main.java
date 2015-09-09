@@ -9,11 +9,13 @@ public class Main {
             Integer[] sequence = new Integer[length];
             for (int i = 0; i < length; i++)
                 sequence[i] = io.getInt ();
+
             int[] lis = LIS.lis (sequence);
             io.println (lis.length);
             for (int index : lis) {
                 io.print (index + " ");
             }
+
             io.println ();
         }
         io.flush ();
