@@ -1,8 +1,5 @@
 package se.dxtr;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -12,9 +9,14 @@ public class Main {
             Integer[] sequence = new Integer[length];
             for (int i = 0; i < length; i++)
                 sequence[i] = io.getInt ();
-            System.out.println ("Input sequence: " + Arrays.toString (sequence));
-            List<Integer> lis = LIS.lis (sequence);
-            System.out.println (lis);
+            int[] lis = LIS.lis (sequence);
+            io.println (lis.length);
+            for (int index : lis) {
+                io.print (index + " ");
+            }
+            io.println ();
         }
+        io.flush ();
+        io.close();
     }
 }
