@@ -1,1 +1,1 @@
-/Users/Ludde/python-custom/kattis.py -f -p intervalcover -m se.dxtr.Main se/dxtr/*.java
+kattis.py -f -p intervalcover -m se.dxtr.Main se/dxtr/*.java
