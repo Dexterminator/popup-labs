@@ -1,8 +1,6 @@
 package se.dxtr;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -18,7 +16,7 @@ public class Main {
             }
             List<Integer> solution = IntervalCover.intervalCover (goal, intervals);
             if (solution != null) {
-                String collect = solution.stream().map (idx -> String.valueOf (idx)).collect (Collectors.joining (" "));
+                String collect = solution.stream().map (String::valueOf).collect (Collectors.joining (" "));
                 io.println (solution.size ());
                 io.println (collect);
             } else {
