@@ -8,13 +8,13 @@ import java.util.Set;
 /**
  * Created by dexter on 10/09/15.
  */
-public class DisjointedSets {
+public class DisjointSets {
     private int n;
     private Map<Integer, Integer> elementToSetId = new HashMap<Integer, Integer> ();
     private Map<Integer, Set<Integer>> setIdToSet = new HashMap<Integer, Set<Integer>> ();
     private int newSetId = 0;
 
-    public DisjointedSets (int n) {
+    public DisjointSets (int n) {
         this.n = n;
     }
 
