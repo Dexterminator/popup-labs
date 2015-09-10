@@ -1,5 +1,5 @@
 package se.dxtr;
-
+import static se.dxtr.LIS.*;
 public class Main {
 
     public static void main(String[] args) {
@@ -10,7 +10,7 @@ public class Main {
             for (int i = 0; i < length; i++)
                 sequence[i] = io.getInt ();
 
-            int[] lis = LIS.lis (sequence);
+            int[] lis = lis (sequence);
             io.println (lis.length);
             for (int index : lis) {
                 io.print (index + " ");

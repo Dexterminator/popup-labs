@@ -5,7 +5,7 @@ package se.dxtr;
  */
 public class LIS {
 
-    public static <T extends Comparable> int[] lis (T[] objects) {
+    public static <T extends Comparable<T>> int[] lis (T[] objects) {
         int[] last = new int[objects.length + 1];
         int[] parent = new int[objects.length];
         int longest = 0;
@@ -36,8 +36,7 @@ public class LIS {
      * @param object The key object
      * @return The new length of the I.S. that ends with object
      */
-    @SuppressWarnings ("unchecked")
-    private static <T extends Comparable> int binarySearch (T[] objects, int[] last, int l, T object) {
+    private static <T extends Comparable<T>> int binarySearch (T[] objects, int[] last, int l, T object) {
         int lo = 1;
         int hi = l;
         int mid;
