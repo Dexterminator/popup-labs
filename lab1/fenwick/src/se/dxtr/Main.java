@@ -10,13 +10,13 @@ public class Main {
 
         for (int i = 0; i < q; i++) {
             String operation = io.getWord ();
-            int index = io.getInt ();
+            int index = io.getInt ()+1;
             if (operation.equals ("+")) {
                 int delta = io.getInt ();
                 fenwickTree.add (index, delta);
             } else {
                 // Operation equals "?"
-                io.println (fenwickTree.sum (index));
+                io.println (fenwickTree.sum (index-1));
             }
         }
         io.flush ();

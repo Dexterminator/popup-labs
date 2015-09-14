@@ -4,10 +4,10 @@ package se.dxtr;
  * Created by dexter on 14/09/15.
  */
 public class FenwickTree {
-    int[] treeSums;
+    long[] treeSums;
 
     public FenwickTree (int n) {
-        treeSums = new int[n+1];
+        treeSums = new long[n+1];
     }
 
     public void add (int index, int delta) {
@@ -18,10 +18,12 @@ public class FenwickTree {
         }
     }
 
-    public int sum (int end) {
-        int sum = 0;
+    public long sum (int end) {
+        if (end < 1)
+            return 0;
+        long sum = 0;
         int n = end;
-        while (n != 0) {
+        while (n > 0) {
             sum += treeSums[n];
             n -= (n & -n);
         }
