@@ -5,14 +5,14 @@ package se.dxtr;
  */
 public class DisjointSets {
     private int[] ids;
-    private int[] sizes;
+    private int[] heights;
 
     public DisjointSets (int n) {
         ids = new int[n];
-        sizes = new int[n];
+        heights = new int[n];
         for (int i = 0; i < n; i++) {
             ids[i] = i;
-            sizes[i] = 1;
+            heights[i] = 1;
         }
     }
 
@@ -21,12 +21,13 @@ public class DisjointSets {
         int bRoot = root (b);
         if (aRoot == bRoot)
             return;
-        if (sizes[aRoot] < sizes[bRoot]) {
-            ids[aRoot] = ids[bRoot];
-            sizes[bRoot] += sizes[aRoot];
-        } else {
-            ids[bRoot] = ids[aRoot];
-            sizes[aRoot] += sizes[bRoot];
+        if (heights[aRoot] < heights[bRoot]) {
+            ids[aRoot] = bRoot;
+        } else if (heights[aRoot] > heights[bRoot]){
+            ids[bRoot] = aRoot;
+        } else { // heights equal, attaching the tree will increase height by 1
+            ids[aRoot] = bRoot;
+            heights[bRoot]++;
         }
     }
 
@@ -35,20 +36,8 @@ public class DisjointSets {
     }
 
     private int root (int a) {
-        int curr = a;
-        while (ids[curr] != curr) {
-            ids[curr] = ids[ids[curr]];
-            curr = ids[curr];
-        }
-
-//        int root = curr;
-//        curr = a;
-//        while (ids[curr] != curr) {
-//            int beforeUpdate = curr;
-//            ids[curr] = root;
-//            curr = ids[beforeUpdate];
-//        }
-
-        return curr;
+        if (a != ids[a])
+            ids[a] = root (ids[a]);
+        return ids[a];
     }
 }
