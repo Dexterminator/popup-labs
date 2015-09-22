@@ -15,10 +15,9 @@ public class Main {
         while(io.hasMoreTokens()){
             int n = io.getInt();
             if(n == 0){
-                io.println("inconsistent");
-                break;
+                break; // No more test cases
             }
-            double[][] matrix = new double[n][n];
+            double[][] matrix = new double[n][n+1];
             double[] vector = new double[n];
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
@@ -26,7 +25,20 @@ public class Main {
                 }
             }
             for (int i = 0; i < n; i++) {
-                vector[i] = io.getDouble();
+                matrix[i][n] = io.getDouble();
+            }
+            double[] solution = solver.solve(matrix, n);
+            if(solution == null)
+                io.println("inconsistent");
+            else{
+                if(Double.isNaN(solution[0])){
+                    io.println("multiple");
+                } else {
+                    for(double coefficient: solution){
+                        io.print(coefficient + " ");
+                    }
+                    io.println();
+                }
             }
             /* Debug prints */
             if(debug) {
@@ -34,9 +46,9 @@ public class Main {
                 for (int i = 0; i < n; i++) {
                     System.err.println(Arrays.toString(matrix[i]));
                 }
-                System.err.println("Vector 1:");
-                System.err.println(Arrays.toString(vector));
-                System.err.println("***");
+                //System.err.println("Vector 1:");
+                //System.err.println(Arrays.toString(vector));
+                //System.err.println("***");
             }
             k++;
         }
