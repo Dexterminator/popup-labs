@@ -116,11 +116,8 @@ public class EquationSolverPlus {
     /**
      * Takes a Gaussian Eliminated Augmented Matrix and decides if this can be solved or not. If it can be solved,
      * it returns a list of zero rows, or and empty list if there are none
-     * @param augmentedMatrix the matrix of size n x n
-     * @param n Size of the matrix
-     * @return List of zero rows, null if matrix is inconsistent
      */
-    public static List<Integer> determineIfInsolvableOrMultiple(double[][] augmentedMatrix, int n){
+    private static List<Integer> determineIfInsolvableOrMultiple(double[][] augmentedMatrix, int n){
         List<Integer> res = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             boolean rowZero = true;
