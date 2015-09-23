@@ -1,10 +1,20 @@
 package se.dxtr;
 
 /**
- * Created by dexter on 09/09/15.
+ * Utility class that provides a method for finding the longest increasing subsequence.
+ * <p/>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class LIS {
 
+    /**
+     * Finds the longest increasing subsequence in an array of objects that are comparable to each other.
+     *
+     * @param objects An array of objects that are comparable to each other, in which to find the longest increasing
+     *                subsequence
+     * @return An array containing the indicies of the elements that make up the longest increasing subsequence
+     */
     public static <T extends Comparable<T>> int[] lis (T[] objects) {
         int[] last = new int[objects.length + 1];
         int[] parent = new int[objects.length];
@@ -29,19 +39,14 @@ public class LIS {
     }
 
     /**
-     * Binary searches for the largest value in last s.t. objects[last[l]] < object
-     * @param objects Array of objects to binary search over
-     * @param last int array keeping indices of last element in the I.S.
-     * @param l Current length of the I.S.
-     * @param object The key object
-     * @return The new length of the I.S. that ends with object
+     * Binary searches for the largest value in last such that objects[last[l]] < object
      */
     private static <T extends Comparable<T>> int binarySearch (T[] objects, int[] last, int l, T object) {
         int lo = 1;
         int hi = l;
         int mid;
         while (lo <= hi) {
-            mid = (int) Math.ceil ((lo + hi)/2);
+            mid = (int) Math.ceil ((lo + hi) / 2);
             if (objects[last[mid]].compareTo (object) < 0)
                 lo = mid + 1;
             else
