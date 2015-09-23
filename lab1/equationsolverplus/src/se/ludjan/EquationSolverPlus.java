@@ -16,18 +16,25 @@ public class EquationSolverPlus {
 
         for (int i = 0; i < n; i++) {
             boolean singular = true;
-
+            int max = i;
+            for (int j = i+1; j < n; j++) {
+                if(Math.abs(augmentedMatrix[j][i]) > Math.abs(augmentedMatrix[max][i]))
+                    max = j;
+            }
+            double[] temp = augmentedMatrix[i];
+            augmentedMatrix[i] = augmentedMatrix[max];
+            augmentedMatrix[max] = temp;
             double[] currRow = augmentedMatrix[i];
             if(Math.abs(currRow[i]) <= EPSILON){
                 for (int k = i+1; k < n; k++) {
                     if(Math.abs(augmentedMatrix[k][i]) > EPSILON){
                         // Try to disprove singularity, if so pivot these rows
                         singular = false;
-                        double[] tempRow = augmentedMatrix[k];
-                        augmentedMatrix[k] = currRow;
-                        augmentedMatrix[i] = tempRow;
-                        currRow = tempRow;
-                        break;
+//                        double[] tempRow = augmentedMatrix[k];
+//                        augmentedMatrix[k] = currRow;
+//                        augmentedMatrix[i] = tempRow;
+//                        currRow = tempRow;
+//                        break;
                     }
                 }
                 if(singular){
@@ -36,8 +43,9 @@ public class EquationSolverPlus {
                         return null;
                 }
             }
-            if(zeroRowIndices.contains(i))
-                continue;
+//            if(zeroRowIndices.contains(i))
+//                continue;
+            /*
             for (int j = i+1; j < n; j++) {
                 if(zeroRowIndices.contains(j))
                     continue;
@@ -46,30 +54,44 @@ public class EquationSolverPlus {
                     // Subtract currRow from this row
                     augmentedMatrix[j][k] -= times * currRow[k];
                 }
+            }*/
+            for (int j = i+1; j < n; j++) {
+                if(zeroRowIndices.contains(i))
+                    continue;
+                double times = augmentedMatrix[j][i]/augmentedMatrix[i][i];
+                for (int k = i; k < n+1; k++) {
+                    augmentedMatrix[j][k] -= times * augmentedMatrix[i][k];
+                }
             }
         }
+
         // Back substitution
         for (int i = n-1; i >= 0; i--) {
-            boolean isNAN = false;
+//            boolean isNAN = false;
+
             double sum = 0.0;
             for (int j = i+1; j < n; j++) {
                 if(augmentedMatrix[i][j] == 0)
                     continue;
-                if (Double.isNaN(solution[j])) {
-                    isNAN = true;
-                    break;
-                }
+//                if (Double.isNaN(solution[j])) {
+//                    isNAN = true;
+//                    break;
+//                }
 
                 sum += augmentedMatrix[i][j] * solution[j];
+                System.out.println("Sum: " + sum);
 
             }
-            if (!isNAN) {
+//            if (!isNAN) {
                 solution[i] = (augmentedMatrix[i][n] - sum) / augmentedMatrix[i][i];
-            } else {
-                solution[i] = Double.NaN;
-            }
+                //System.out.println(solution[i]);
+//            } else {
+//                solution[i] = Double.NaN;
+//            }
 
         }
+//        System.out.println(Arrays.toString(solution));
+        System.out.println("***");
         return solution;
     }
 
