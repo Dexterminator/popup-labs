@@ -8,10 +8,6 @@ public class Main {
         // write your code here
         Kattio io = new Kattio(System.in, System.out);
         EquationSolverPlus solver = new EquationSolverPlus();
-        int k = 1;
-        boolean debug = false;
-        if(args.length > 0)
-            debug = Boolean.parseBoolean(args[0]);
         while(io.hasMoreTokens()){
             int n = io.getInt();
             if(n == 0){
@@ -39,17 +35,6 @@ public class Main {
                 }
                 io.println();
             }
-            /* Debug prints */
-            if(debug) {
-                System.err.println("Matrix 1:");
-                for (int i = 0; i < n; i++) {
-                    System.err.println(Arrays.toString(matrix[i]));
-                }
-                //System.err.println("Vector 1:");
-                //System.err.println(Arrays.toString(vector));
-                //System.err.println("***");
-            }
-            k++;
         }
         io.close();
     }
