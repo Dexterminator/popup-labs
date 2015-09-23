@@ -16,7 +16,7 @@ public class EquationSolverPlus {
      * organized in an Augmented Matrix of size n x n
      * @param augmentedMatrix The set of linear equations
      * @param n The size of the matrix
-     * @return a double array with the solutions to the equation system
+     * @return a double array with the solutions to the equation system, can include NaN's
      */
     public static double[] solve(double[][] augmentedMatrix, int n){
         double[] solution = new double[n];
@@ -60,11 +60,10 @@ public class EquationSolverPlus {
             augmentedMatrix[i] = tempRow;
 
             double[] currRow = augmentedMatrix[i];
+            /* Subtract this row from each other row below this one per Gaussian Elimination */
             for (int j = i+1; j < n; j++) {
-//                if(zeroRowIndices.contains(j))
-//                    continue;
                 if(Math.abs(currRow[i]) < EPSILON)
-                    continue;
+                    continue;  // We do not want to divide by zero
                 double times = augmentedMatrix[j][i]/currRow[i];
                 for (int k = 0; k < n + 1; k++) {
                     // Subtract currRow from this row
@@ -72,23 +71,19 @@ public class EquationSolverPlus {
                 }
             }
         }
-        zeroRowIndices = determineIfInsolvableOrMultiple(augmentedMatrix, n);   // singular
+        /* zeroRowIndices is null if no solutions exist or is a list of zero rows if multiple solutions exit*/
+        zeroRowIndices = determineIfInsolvableOrMultiple(augmentedMatrix, n);
         if(zeroRowIndices == null)
             return null;
-//        System.out.println(Arrays.toString(colPerm));
+        /* Now that we have the permutation array we create the inverse permutation array */
         for (int i = 0; i < n; i++) {
-            invColPerm[colPerm[i]] = i; // Get the inverse permutation of colPerm
+            invColPerm[colPerm[i]] = i;
         }
-        /*
-        for (int i = 0; i < n; i++) {
-            System.out.println(Arrays.toString(augmentedMatrix[i]));
-        }*/
-//        System.out.println("***");
-        // Back substitution
-        /*for (int i = 0; i < n; i++) {
-            solution[i] = augmentedMatrix[invColPerm[i]][n];
-        }*/
 
+        /*
+        * Perform backwards substitution as normal.
+        * The solutions array will not be in correct order, however
+        */
         for (int i = n-1; i >= 0; i--) {
             boolean isNAN = false;
             double sum = 0.0;
@@ -99,10 +94,9 @@ public class EquationSolverPlus {
                     isNAN = true;
                     break;
                 }
-
                 sum += augmentedMatrix[i][j] * solution[j];
-
             }
+            /* NaN in this case means we cannot solve this coefficient.*/
             if (!isNAN) {
                 solution[i] = (augmentedMatrix[i][n] - sum) / augmentedMatrix[i][i];
             } else {
@@ -110,13 +104,22 @@ public class EquationSolverPlus {
             }
 
         }
-        double[] solution2 = new double[n];
+        double[] realSolution = new double[n];
+        /* Go through the permutated array of solutions and put these on the right
+        * spot with the inverse column permutation array */
         for (int i = 0; i <n ; i++) {
-            solution2[i] = solution[invColPerm[i]];
+            realSolution[i] = solution[invColPerm[i]];
         }
-        return solution2;
+        return realSolution;
     }
 
+    /**
+     * Takes a Gaussian Eliminated Augmented Matrix and decides if this can be solved or not. If it can be solved,
+     * it returns a list of zero rows, or and empty list if there are none
+     * @param augmentedMatrix the matrix of size n x n
+     * @param n Size of the matrix
+     * @return List of zero rows, null if matrix is inconsistent
+     */
     public static List<Integer> determineIfInsolvableOrMultiple(double[][] augmentedMatrix, int n){
         List<Integer> res = new ArrayList<>();
         for (int i = 0; i < n; i++) {
@@ -130,9 +133,9 @@ public class EquationSolverPlus {
             }
             if(rowZero){
                 if (Math.abs(augmentedMatrix[i][n]) > EPSILON){
-                    return null;
+                    return null; // Found something along the lines of 0 = 1
                 } else {
-                    res.add(i); // Mark this row as a row that can have multiple solutions
+                    res.add(i); // Empty row, add to list
                 }
             }
         }
