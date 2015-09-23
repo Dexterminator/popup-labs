@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Kattio io = new Kattio(System.in, System.out);
         while (io.hasMoreTokens()) {
-            IntervalCover.Interval goal = new IntervalCover.Interval (io.getDouble(), io.getDouble(), Integer.MIN_VALUE);
+            IntervalCover.Interval goal = new IntervalCover.Interval (io.getDouble(), io.getDouble());
             int n = io.getInt ();
             IntervalCover.Interval[] intervals = new IntervalCover.Interval[n];
             for (int i = 0; i < n; i++) {
@@ -26,5 +26,4 @@ public class Main {
         }
         io.close();
     }
-
 }
