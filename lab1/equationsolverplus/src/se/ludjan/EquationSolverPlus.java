@@ -1,6 +1,7 @@
 package se.ludjan;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,133 +10,168 @@ import java.util.List;
  */
 public class EquationSolverPlus {
     static final double EPSILON = 1e-10;
-
+    enum State {INCONSISTENT, MULTIPLE}
 
     /**
      * EquationSolverPlus.solve() solves a set of linear equations
-     * organized in an Augmented Matrix of size n x n
+     * organized in an Augmented Matrix of size n x n+1
      * @param augmentedMatrix The set of linear equations
-     * @param n The size of the matrix
+     * @param n The size of set of linear equations
      * @return a double array with the solutions to the equation system, can include NaN's
      */
     public static double[] solve(double[][] augmentedMatrix, int n){
-        double[] solution = new double[n];
-        List<Integer> zeroRowIndices = Collections.emptyList();
-        int[] colPerm = new int[n];   // Array which will contain permutations of columns when swapped
-        int[] invColPerm = new int[n]; // This will be the inverse permutation of colPerm
+
+        double[] solution;
+        augmentedMatrix = sortMatrix(augmentedMatrix, n);
+
+        boolean multiple = false;
         for (int i = 0; i < n; i++) {
-            colPerm[i] = i; // In the beginning, each column is where it is supposed to be
-        }
-        /* Gaussian elimination */
-        for (int i = 0; i < n; i++) {
-            /* Find best augmentedMatrix[k][j]; k,j >= i s.t. it is the max value */
-            double bestVal = augmentedMatrix[i][i];
-            int bestK = i;
-            int bestJ = i;
-            for (int k = i; k < n; k++) {
-                for (int j = i; j < n; j++) {
-                    if(Math.abs(augmentedMatrix[k][j]) > bestVal){
-                        bestVal = Math.abs(augmentedMatrix[k][j]);
-                        bestK = k;
-                        bestJ = j;
+            double[] currRow = augmentedMatrix[i];
+            if (Math.abs (currRow[i]) <= EPSILON) {
+                boolean singular = true;
+                for (int k = i + 1; k < n; k++) {
+                    if (Math.abs (augmentedMatrix[k][i]) > EPSILON) {
+                        // Try to disprove singularity, if so pivot these rows
+                        singular = false;
+                        double[] tempRow = augmentedMatrix[k];
+                        augmentedMatrix[k] = currRow;
+                        augmentedMatrix[i] = tempRow;
+                        break;
                     }
                 }
+                if (singular){
+                    /* Singularity is found; matrix either has multiple solutions or none*/
+                    State matrixState = determineIfInsolvableOrMultiple (augmentedMatrix, n);
+                    if(matrixState == State.INCONSISTENT) // Matrix has no solution, return
+                        return null;
+                    else // matrixState == State.MULTIPLE
+                        multiple = true;
+                }
             }
-
-            for (int j = 0; j < n; j++) {
-                /* Pivot columns when the best j value is found*/
-                double temp = augmentedMatrix[j][i];
-                augmentedMatrix[j][i] = augmentedMatrix[j][bestJ];
-                augmentedMatrix[j][bestJ] = temp;
-            }
-
-            /* Update the permutation array*/
-            int temp = colPerm[i];
-            colPerm[i] = bestJ;
-            colPerm[bestJ] = temp;
-
-            /* Pivot rows */
-            double[] tempRow = augmentedMatrix[bestK];
-            augmentedMatrix[bestK] = augmentedMatrix[i];
-            augmentedMatrix[i] = tempRow;
-
-            double[] currRow = augmentedMatrix[i];
-            /* Subtract this row from each other row below this one per Gaussian Elimination */
-            for (int j = i+1; j < n; j++) {
-                if(Math.abs(currRow[i]) < EPSILON)
-                    continue;  // We do not want to divide by zero
-                double times = augmentedMatrix[j][i]/currRow[i];
-                for (int k = 0; k < n + 1; k++) {
+            // Subtract this row from the others a number of times
+            currRow = augmentedMatrix[i];
+            if (Math.abs(currRow[i]) < EPSILON)
+                continue;  // We do not want to divide by zero
+            double times = 1/currRow[i];
+            for (int j = i + 1; j < n; j++) {
+                double target = augmentedMatrix[j][i];
+                for (int k = i; k < n + 1; k++) {
                     // Subtract currRow from this row
-                    augmentedMatrix[j][k] -= times * currRow[k];
+                    augmentedMatrix[j][k] -= times*target*augmentedMatrix[i][k];
                 }
             }
         }
-        /* zeroRowIndices is null if no solutions exist or is a list of zero rows if multiple solutions exit*/
-        zeroRowIndices = determineIfInsolvableOrMultiple(augmentedMatrix, n);
-        if(zeroRowIndices == null)
-            return null;
-        /* Now that we have the permutation array we create the inverse permutation array */
+        if(!multiple) {
+            // No multiple solutions. Easy back substitution to find answer
+            solution = performBackSubstitution(augmentedMatrix, n);
+            return solution;
+        }
+        /* If there are multiple solutions, the easiest way to find these is adding Jordan to Gauss */
+        augmentedMatrix = sortMatrix(augmentedMatrix, n);
+        // Gauss-Jordan
+        for (int i = n-1; i >=0 ; i--) {
+            double[] currRow = augmentedMatrix[i];
+            if(Math.abs(currRow[i]) < EPSILON)
+                continue;  // We do not want to divide by zero
+            double times = 1.0/currRow[i];
+            for (int j = i-1; j >= 0 ; j--) {
+                double target = augmentedMatrix[j][i];
+                for (int k = 0; k < n+1; k++) {
+                    augmentedMatrix[j][k] -= times*target*augmentedMatrix[i][k];
+                }
+            }
+        }
+        /* Both the Gauss and Gauss-Jordan may have rearranged the rows. Sorting them again gives us values along the diagonal, which we want*/
+        augmentedMatrix = sortMatrix(augmentedMatrix, n);
+        solution = new double[n];
         for (int i = 0; i < n; i++) {
-            invColPerm[colPerm[i]] = i;
-        }
-
-        /*
-        * Perform backwards substitution as normal.
-        * The solutions array will not be in correct order, however
-        */
-        for (int i = n-1; i >= 0; i--) {
-            boolean isNAN = false;
-            double sum = 0.0;
-            for (int j = i+1; j < n; j++) {
-                if(Math.abs(augmentedMatrix[i][j]) < EPSILON)
+            boolean isZero = true;
+            /* If there is no value at the diagonal after Gauss-Jordan, we know that the corresponding coefficient has multiple solutions
+            * (We have already determined the matrix has a solution)
+            * */
+            if(Math.abs(augmentedMatrix[i][i]) > EPSILON)
+                isZero = false;
+            if(isZero)
+                 {
+                    solution[i] = Double.NaN;
                     continue;
-                if (Double.isNaN(solution[j])) {
-                    isNAN = true;
-                    break;
                 }
-                sum += augmentedMatrix[i][j] * solution[j];
+            int coeffCounter = 0;
+            /* Also if there are more values != 0 on this row than the diagonal, the coefficient also has multiple solution */
+            for (int j = i; j < n; j++) {
+                if (Math.abs(augmentedMatrix[i][j]) > EPSILON)
+                    coeffCounter++;
             }
-            /* NaN in this case means we cannot solve this coefficient.*/
-            if (!isNAN) {
-                solution[i] = (augmentedMatrix[i][n] - sum) / augmentedMatrix[i][i];
-            } else {
+            if (coeffCounter > 1) {
                 solution[i] = Double.NaN;
+                continue;
             }
+            /* Finally, we can calculate the solution */
+            solution[i] = augmentedMatrix[i][n] / augmentedMatrix[i][i];
+        }
+        return solution;
 
-        }
-        double[] realSolution = new double[n];
-        /* Go through the permutated array of solutions and put these on the right
-        * spot with the inverse column permutation array */
-        for (int i = 0; i <n ; i++) {
-            realSolution[i] = solution[invColPerm[i]];
-        }
-        return realSolution;
     }
 
     /**
-     * Takes a Gaussian Eliminated Augmented Matrix and decides if this can be solved or not. If it can be solved,
-     * it returns a list of zero rows, or and empty list if there are none
+     * Sorts the matrix so we, if possible, have values along the diagonal in the matrix
      */
-    private static List<Integer> determineIfInsolvableOrMultiple(double[][] augmentedMatrix, int n){
-        List<Integer> res = new ArrayList<>();
+    private static double[][] sortMatrix(double[][] augmentedMatrix, int n){
+        for (int i = 0; i < n; i++) {
+            if(Math.abs(augmentedMatrix[i][i]) > EPSILON)
+                continue;
+            for (int j = i+1; j < n; j++) {
+                if(Math.abs(augmentedMatrix[i][j]) >EPSILON){
+                    double[] temp = augmentedMatrix[j];
+                    augmentedMatrix[j] = augmentedMatrix[i];
+                    augmentedMatrix[i] = temp;
+                }
+            }
+        }
+        return augmentedMatrix;
+    }
+
+    /**
+     * Perform back substitution throughout the matrix, which is now in upper triangular form, thereby
+     * producing the solution.
+     */
+    private static double[] performBackSubstitution(double[][] augmentedMatrix, int n) {
+        double[] solution = new double[n];
+        for (int i = n - 1; i >= 0; i--) {
+            double sum = 0.0;
+            for (int j = i + 1; j < n; j++) {
+                sum += augmentedMatrix[i][j] * solution[j];
+            }
+            solution[i] = (augmentedMatrix[i][n] - sum) / augmentedMatrix[i][i];
+        }
+        return solution;
+    }
+
+
+    /**
+     * Determine if the linear equation system is inconsistent or contains multipla solutions
+     */
+    private static State determineIfInsolvableOrMultiple (double[][] augmentedMatrix, int n) {
+        State ret = State.MULTIPLE; // Default is multiple
         for (int i = 0; i < n; i++) {
             boolean rowZero = true;
             for (int j = 0; j < n; j++) {
-                if(Math.abs(augmentedMatrix[i][j]) < EPSILON){
+                if (Math.abs (augmentedMatrix[i][j]) < EPSILON) {
                     continue;
                 } else {
                     rowZero = false;
                 }
             }
-            if(rowZero){
-                if (Math.abs(augmentedMatrix[i][n]) > EPSILON){
-                    return null; // Found something along the lines of 0 = 1
+            if (rowZero) {
+                if (Math.abs (augmentedMatrix[i][n]) > EPSILON) {
+                    ret = State.INCONSISTENT;
+                    break;
                 } else {
-                    res.add(i); // Empty row, add to list
+                    ret = State.MULTIPLE;
+                    break;
                 }
             }
         }
-        return res;
+        return ret;
     }
 }

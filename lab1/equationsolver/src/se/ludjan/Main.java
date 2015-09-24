@@ -31,7 +31,7 @@ public class Main {
             if(solution == null)
                 io.println("inconsistent");
             else{
-                if(Double.isNaN(solution[0])){
+                if(solution.length < 1){
                     io.println("multiple");
                 } else {
                     for(double coefficient: solution){

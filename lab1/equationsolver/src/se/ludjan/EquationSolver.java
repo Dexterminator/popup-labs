@@ -14,7 +14,8 @@ public class EquationSolver {
      *
      * @param augmentedMatrix the augmented matrix of equations and unknowns
      * @param n the dimension of the system of equations, i.e the original matrix
-     * @return
+     * @return a double array containing the solution to the equation system
+     * (zero if multiple solutions exist), null if there are no solutions
      */
     public static double[] solve (double[][] augmentedMatrix, int n) {
         for (int i = 0; i < n; i++) {
@@ -32,8 +33,14 @@ public class EquationSolver {
                         break;
                     }
                 }
-                if (singular)
-                    return determineIfInsolvableOrMultiple (augmentedMatrix, n);
+                if (singular){
+                    /* Singularity is found; matrix either has multiple solutions or none*/
+                    State matrixState = determineIfInsolvableOrMultiple (augmentedMatrix, n);
+                    if(matrixState == State.INCONSISTENT)
+                        return null;
+                    else // matrixState == State.MULTIPLE
+                        return new double[0];
+                }
             }
             subtractRows (augmentedMatrix, n, i, currRow);
         }
@@ -72,9 +79,10 @@ public class EquationSolver {
     }
 
     /**
-     *
+     * Determine if the linear equation system is inconsistent or contains multipla solutions
      */
     private static State determineIfInsolvableOrMultiple (double[][] augmentedMatrix, int n) {
+        State ret = State.MULTIPLE; // Default is multiple
         for (int i = 0; i < n; i++) {
             boolean rowZero = true;
             for (int j = 0; j < n; j++) {
@@ -86,11 +94,14 @@ public class EquationSolver {
             }
             if (rowZero) {
                 if (Math.abs (augmentedMatrix[i][n]) > EPSILON) {
-                    return State.INCONSISTENTt;
+                    ret = State.INCONSISTENT;
+                    break;
                 } else {
-                    return State.MULTIPLE;
+                    ret = State.MULTIPLE;
+                    break;
                 }
             }
         }
+        return ret;
     }
 }
