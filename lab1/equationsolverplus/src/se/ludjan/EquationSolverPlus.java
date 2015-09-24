@@ -1,26 +1,23 @@
 package se.ludjan;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 /**
- * Created by Ludvig Jansson and Dexter Gramfors on 15-09-22.
+ * Utility class that provides a method for solving partial linear equations.
+ *
+ * Authors:
+ * Ludvig Jansson and Dexter Gramfors
  */
 public class EquationSolverPlus {
     static final double EPSILON = 1e-10;
     enum State {INCONSISTENT, MULTIPLE}
 
     /**
-     * EquationSolverPlus.solve() solves a set of linear equations
-     * organized in an Augmented Matrix of size n x n+1
+     * Solves a set of linear equation organized in an augmented matrix of size n x n+1
      * @param augmentedMatrix The set of linear equations
      * @param n The size of set of linear equations
-     * @return a double array with the solutions to the equation system, can include NaN's
+     * @return a double array with the solutions to the equation system containing all deductible variables.
+     * The indices of the variables which could not be deduced will contain NaN:s.
      */
     public static double[] solve(double[][] augmentedMatrix, int n){
-
         double[] solution;
         augmentedMatrix = sortMatrix(augmentedMatrix, n);
 
@@ -39,36 +36,92 @@ public class EquationSolverPlus {
                         break;
                     }
                 }
+
                 if (singular){
-                    /* Singularity is found; matrix either has multiple solutions or none*/
+                    // Singularity is found: matrix either has multiple solutions or none
                     State matrixState = determineIfInsolvableOrMultiple (augmentedMatrix, n);
-                    if(matrixState == State.INCONSISTENT) // Matrix has no solution, return
+                    if(matrixState == State.INCONSISTENT)
                         return null;
                     else // matrixState == State.MULTIPLE
                         multiple = true;
                 }
             }
-            // Subtract this row from the others a number of times
-            currRow = augmentedMatrix[i];
-            if (Math.abs(currRow[i]) < EPSILON)
-                continue;  // We do not want to divide by zero
-            double times = 1/currRow[i];
-            for (int j = i + 1; j < n; j++) {
-                double target = augmentedMatrix[j][i];
-                for (int k = i; k < n + 1; k++) {
-                    // Subtract currRow from this row
-                    augmentedMatrix[j][k] -= times*target*augmentedMatrix[i][k];
-                }
-            }
+            subtractCurrentRowFromOtherRows (augmentedMatrix, n, i);
         }
+
         if(!multiple) {
-            // No multiple solutions. Easy back substitution to find answer
+            // No multiple solutions. Use simple back substitution to find answer
             solution = performBackSubstitution(augmentedMatrix, n);
             return solution;
         }
-        /* If there are multiple solutions, the easiest way to find these is adding Jordan to Gauss */
+
+        // If there are multiple solutions, the easiest way to find these is adding Jordan to Gauss
         augmentedMatrix = sortMatrix(augmentedMatrix, n);
-        // Gauss-Jordan
+        performGaussJordan (augmentedMatrix, n);
+
+        // Both the Gauss and Gauss-Jordan may have rearranged the rows.
+        // Sorting them again gives us values along the diagonal, which we want
+        augmentedMatrix = sortMatrix(augmentedMatrix, n);
+
+        return getUnderdeterminedSolution (augmentedMatrix, n);
+    }
+
+    /**
+     * Returns a double array containing all deductible variables when the system is underdetermined.
+     */
+    private static double[] getUnderdeterminedSolution (double[][] augmentedMatrix, int n) {
+        double[] solution;
+        solution = new double[n];
+        for (int i = 0; i < n; i++) {
+            boolean isZero = true;
+
+            // If there is no value at the diagonal after Gauss-Jordan, we know that the corresponding
+            // coefficient has multiple solutions (We have already determined the matrix has a solution)
+            if(Math.abs(augmentedMatrix[i][i]) > EPSILON)
+                isZero = false;
+            if (isZero) {
+                solution[i] = Double.NaN;
+                continue;
+            }
+            int coeffCounter = 0;
+
+            // If there are more values != 0 on this row than the diagonal, the coefficient also has multiple solution
+            for (int j = i; j < n; j++) {
+                if (Math.abs(augmentedMatrix[i][j]) > EPSILON)
+                    coeffCounter++;
+            }
+
+            if (coeffCounter > 1) {
+                solution[i] = Double.NaN;
+                continue;
+            }
+            solution[i] = augmentedMatrix[i][n] / augmentedMatrix[i][i];
+        }
+        return solution;
+    }
+
+    /**
+     * Subtract this row from the others the correct number of times
+     */
+    private static void subtractCurrentRowFromOtherRows (double[][] augmentedMatrix, int n, int i) {
+        double[] currRow;
+        currRow = augmentedMatrix[i];
+        if (Math.abs(currRow[i]) < EPSILON)
+            return;
+        double times = 1/currRow[i];
+        for (int j = i + 1; j < n; j++) {
+            double target = augmentedMatrix[j][i];
+            for (int k = i; k < n + 1; k++) {
+                // Subtract currRow from this row
+                augmentedMatrix[j][k] -= times*target*augmentedMatrix[i][k];
+            }
+        }
+    }
+
+    /**
+     * Performs Gauss-Jordan by subtracting back up the matrix
+     */
+    private static void performGaussJordan (double[][] augmentedMatrix, int n) {
         for (int i = n-1; i >=0 ; i--) {
             double[] currRow = augmentedMatrix[i];
             if(Math.abs(currRow[i]) < EPSILON)
@@ -81,40 +134,11 @@ public class EquationSolverPlus {
                 }
             }
         }
-        /* Both the Gauss and Gauss-Jordan may have rearranged the rows. Sorting them again gives us values along the diagonal, which we want*/
-        augmentedMatrix = sortMatrix(augmentedMatrix, n);
-        solution = new double[n];
-        for (int i = 0; i < n; i++) {
-            boolean isZero = true;
-            /* If there is no value at the diagonal after Gauss-Jordan, we know that the corresponding coefficient has multiple solutions
-            * (We have already determined the matrix has a solution)
-            * */
-            if(Math.abs(augmentedMatrix[i][i]) > EPSILON)
-                isZero = false;
-            if(isZero)
-                 {
-                    solution[i] = Double.NaN;
-                    continue;
-                }
-            int coeffCounter = 0;
-            /* Also if there are more values != 0 on this row than the diagonal, the coefficient also has multiple solution */
-            for (int j = i; j < n; j++) {
-                if (Math.abs(augmentedMatrix[i][j]) > EPSILON)
-                    coeffCounter++;
-            }
-            if (coeffCounter > 1) {
-                solution[i] = Double.NaN;
-                continue;
-            }
-            /* Finally, we can calculate the solution */
-            solution[i] = augmentedMatrix[i][n] / augmentedMatrix[i][i];
-        }
-        return solution;
-
     }
 
     /**
-     * Sorts the matrix so we, if possible, have values along the diagonal in the matrix
+     * Both Gauss and Gauss-Jordan may rearrange the matrix.
+     * Sorts the matrix so we, if possible, have values along the diagonal in the matrix.
      */
     private static double[][] sortMatrix(double[][] augmentedMatrix, int n){
         for (int i = 0; i < n; i++) {
@@ -149,10 +173,10 @@ public class EquationSolverPlus {
 
 
     /**
-     * Determine if the linear equation system is inconsistent or contains multipla solutions
+     * Determine if the linear equation system is inconsistent or contains multiple solutions
      */
     private static State determineIfInsolvableOrMultiple (double[][] augmentedMatrix, int n) {
-        State ret = State.MULTIPLE; // Default is multiple
+        State ret = State.MULTIPLE;
         for (int i = 0; i < n; i++) {
             boolean rowZero = true;
             for (int j = 0; j < n; j++) {
@@ -162,6 +186,7 @@ public class EquationSolverPlus {
                     rowZero = false;
                 }
             }
+
             if (rowZero) {
                 if (Math.abs (augmentedMatrix[i][n]) > EPSILON) {
                     ret = State.INCONSISTENT;
@@ -172,6 +197,7 @@ public class EquationSolverPlus {
                 }
             }
         }
+
         return ret;
     }
 }
