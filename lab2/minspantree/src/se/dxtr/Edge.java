@@ -3,10 +3,10 @@ package se.dxtr;
 /**
  * Created by dexter on 05/10/15.
  */
-public class Edge<E, V> {
-    private Vertex<V, E> from;
-    private Vertex<V, E> to;
-    private E data;
+public class Edge<V, E> {
+    private final Vertex<V, E> from;
+    private final Vertex<V, E> to;
+    private final E data;
 
     public Edge (Vertex<V, E> from, Vertex<V, E> to, E data) {
         this.from = from;
@@ -17,6 +17,7 @@ public class Edge<E, V> {
     public Edge (Vertex<V, E> from, Vertex<V, E> to) {
         this.from = from;
         this.to = to;
+        this.data = null;
     }
 
     public Vertex<V, E> getFrom () {

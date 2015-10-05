@@ -18,10 +18,14 @@ public class Main {
                 int u = io.getInt ();
                 int v = io.getInt ();
                 int w = io.getInt ();
-                graph.addEdge (u, v, new Weight (w));
+                if (v > u) {
+                    graph.addEdge (u, v, new Weight (w));
+                } else {
+                    graph.addEdge (v, u, new Weight (w));
+                }
             }
 
-            Set<Edge<Weight, Void>> tree = Kruskal.kruskal (graph);
+            Set<Edge<Void, Weight>> tree = Kruskal.kruskal (graph);
             if (tree != null) {
                 printTree (tree);
             } else {
@@ -31,14 +35,14 @@ public class Main {
         io.close ();
     }
 
-    public static void printTree (Set<Edge<Weight, Void>> tree) {
-        int sum = 0;
-        for (Edge<Weight, Void> edge : tree) {
+    public static void printTree (Set<Edge<Void, Weight>> tree) {
+        long sum = 0;
+        for (Edge<Void, Weight> edge : tree) {
             sum += edge.getData ().weight;
         }
 
         io.println (sum);
-        for (Edge<Weight, Void> edge : tree) {
+        for (Edge<Void, Weight> edge : tree) {
             io.println (edge.getFrom ().getId () + " " + edge.getTo ().getId ());
         }
     }

@@ -9,8 +9,8 @@ import java.util.List;
  */
 public class Vertex<V, E> {
     private final int id;
-    private final List<Edge<E, V>> edges;
-    private V data;
+    private final List<Edge<V, E>> edges;
+    private final V data;
 
     public Vertex (int id, V data) {
         this.id = id;
@@ -36,7 +36,7 @@ public class Vertex<V, E> {
         return Collections.unmodifiableList (edges);
     }
 
-    public void addEdge (Edge<E, V> edge) {
+    public void addEdge (Edge<V, E> edge) {
         edges.add (edge);
     }
 

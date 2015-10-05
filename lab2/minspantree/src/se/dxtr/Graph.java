@@ -8,9 +8,8 @@ import java.util.List;
  * Created by dexter on 05/10/15.
  */
 public class Graph<V, E> {
-    private List<Vertex<V, E>> vertices;
-    private List<Edge<E, V>> edges;
-
+    private final List<Vertex<V, E>> vertices;
+    private final List<Edge<V, E>> edges;
 
     public Graph (int size) {
         vertices = new ArrayList<> ();
@@ -22,14 +21,14 @@ public class Graph<V, E> {
     public void addEdge (int from, int to, E data) {
         Vertex<V, E> fromVertex = vertices.get (from);
         Vertex<V, E> toVertex = vertices.get (to);
-        Edge<E, V> edge = new Edge<> (fromVertex, toVertex, data);
+        Edge<V, E> edge = new Edge<> (fromVertex, toVertex, data);
         edges.add (edge);
         fromVertex.addEdge (edge);
         toVertex.addEdge (edge);
     }
 
-    public List<Edge<E, V>> getEdges () {
-        return edges;
+    public List<Edge<V, E>> getEdges () {
+        return Collections.unmodifiableList (edges);
     }
 
     public List<Vertex<V, E>> getVertices () {
