@@ -9,7 +9,7 @@ public interface Graph<T extends Comparable<T>> {
 
     boolean adjacent (Vertex<T> vertexA, Vertex<T> vertexB);
 
-    Set<Vertex<T>> neighbors (Vertex<T> vertex);
+    Set<Vertex<T>> getNeighbors (Vertex<T> vertex);
 
     boolean addVertex (Vertex<T> vertex);
 
@@ -18,4 +18,5 @@ public interface Graph<T extends Comparable<T>> {
     boolean addEdge (Vertex<T> vertexA, Vertex<T> vertexB);
 
     boolean removeEdge (Vertex<T> vertexA, Vertex<T> vertexB);
+
 }

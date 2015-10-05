@@ -9,6 +9,7 @@ public class UndirectedGraph<T extends Comparable<T>> implements Graph<T> {
     private Map<Vertex<T>, Set<Vertex<T>>> neighbors;
     private Set<UndirectedEdge<T>> edges;
     private Map<UndirectedEdge<T>, Integer> weights;
+    private int cost = 0;
 
     public UndirectedGraph () {
         neighbors = new HashMap<> ();
@@ -23,7 +24,7 @@ public class UndirectedGraph<T extends Comparable<T>> implements Graph<T> {
     }
 
     @Override
-    public Set<Vertex<T>> neighbors (Vertex<T> vertex) {
+    public Set<Vertex<T>> getNeighbors (Vertex<T> vertex) {
         validateVertex (vertex);
         return Collections.unmodifiableSet (neighbors.get (vertex));
     }
@@ -57,11 +58,15 @@ public class UndirectedGraph<T extends Comparable<T>> implements Graph<T> {
     public boolean addEdge (Vertex<T> vertexA, Vertex<T> vertexB, int weight) {
         validateVertices (vertexA, vertexB);
         UndirectedEdge<T> edge = new UndirectedEdge<> (vertexA, vertexB);
-        weights.put (edge, weight);
+        return addEdge (edge, weight);
+    }
+
+    public boolean addEdge (UndirectedEdge<T> edge, int weight) {
+        addWeight (weight, edge);
         return addEdge (edge);
     }
 
-    private boolean addEdge (UndirectedEdge<T> edge) {
+    public boolean addEdge (UndirectedEdge<T> edge) {
         if (edges.contains (edge))
             return false;
         neighbors.get (edge.getVertexA ()).add (edge.getVertexB ());
@@ -77,6 +82,7 @@ public class UndirectedGraph<T extends Comparable<T>> implements Graph<T> {
         if (!edges.contains (edge))
             return false;
 
+        cost -= weights.remove (edge);
         edges.remove (edge);
         neighbors.get (vertexA).remove (vertexB);
         neighbors.get (vertexB).remove (vertexA);
@@ -86,8 +92,24 @@ public class UndirectedGraph<T extends Comparable<T>> implements Graph<T> {
     public int getWeight (Vertex<T> vertexA, Vertex<T> vertexB) {
         validateVertices (vertexA, vertexB);
         UndirectedEdge<T> edge = new UndirectedEdge<> (vertexA, vertexB);
+        return getWeight (edge);
+    }
+
+    public int getWeight (UndirectedEdge<T> edge) {
         validateEdge (edge);
         return weights.get (edge);
+    }
+
+    public Set<UndirectedEdge<T>> getEdges () {
+        return Collections.unmodifiableSet (edges);
+    }
+
+    public Set<Vertex<T>> getVertices () {
+        return Collections.unmodifiableSet (neighbors.keySet ());
+    }
+
+    public int getCost () {
+        return cost;
     }
 
     private void validateEdge (UndirectedEdge<T> edge) {
@@ -107,8 +129,19 @@ public class UndirectedGraph<T extends Comparable<T>> implements Graph<T> {
         validateVertex (vertexB);
     }
 
+    private void addWeight (int weight, UndirectedEdge<T> edge) {
+        weights.put (edge, weight);
+        cost += weight;
+    }
+
     private boolean graphContains (Vertex<T> vertex) {
         return neighbors.containsKey (vertex);
     }
 
+    @Override
+    public String toString () {
+        return "UndirectedGraph{" +
+                "edges=" + edges +
+                '}';
+    }
 }

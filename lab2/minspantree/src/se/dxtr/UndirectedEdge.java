@@ -48,4 +48,13 @@ public class UndirectedEdge<T extends Comparable<T>> {
     public int hashCode () {
         return Objects.hash (vertexA, vertexB);
     }
+
+    @Override
+    public String toString () {
+        return "UndirectedEdge{" +
+                "vertexA=" + vertexA +
+                ", vertexB=" + vertexB +
+                '}';
+    }
+
 }

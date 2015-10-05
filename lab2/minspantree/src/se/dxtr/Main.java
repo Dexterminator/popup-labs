@@ -1,5 +1,8 @@
 package se.dxtr;
 
+import java.util.Comparator;
+import java.util.Optional;
+
 public class Main {
 
     static Kattio io = new Kattio (System.in, System.out);
@@ -23,12 +26,23 @@ public class Main {
                 graph.addEdge (new Vertex<> (u), new Vertex<> (v), w);
             }
 
-            io.println (graph.neighbors (new Vertex<> (1)));
-            io.println (graph.neighbors (new Vertex<> (0)));
-            io.println (graph.getWeight (new Vertex<> (0), new Vertex<> (1)));
-            break;
+            Optional<UndirectedGraph<Integer>> minimumSpanningTree = Kruskal.minimumSpanningTree (graph);
+            if (minimumSpanningTree.isPresent ()) {
+                printSortedTree (minimumSpanningTree.get ());
+            } else {
+                io.println ("Impossible");
+            }
         }
-
         io.close ();
+    }
+
+    private static void printSortedTree (UndirectedGraph<Integer> tree) {
+        io.println (tree.getCost ());
+        Comparator<UndirectedEdge<Integer>> edgeComparator =
+                Comparator.comparing (UndirectedEdge<Integer>::getVertexA)
+                        .thenComparing (UndirectedEdge<Integer>::getVertexB);
+        tree.getEdges ().stream ()
+                .sorted (edgeComparator)
+                .forEach (edge -> io.println (edge.getVertexA ().getId () + " " + edge.getVertexB ().getId ()));
     }
 }
