@@ -1,22 +1,49 @@
 package se.dxtr;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by dexter on 05/10/15.
  */
-public interface Graph<T extends Comparable<T>> {
+public class Graph<V, E> {
+    private List<Vertex<V, E>> vertices;
+    private List<Edge<E, V>> edges;
 
-    boolean adjacent (Vertex<T> vertexA, Vertex<T> vertexB);
 
-    Set<Vertex<T>> getNeighbors (Vertex<T> vertex);
+    public Graph (int size) {
+        vertices = new ArrayList<> ();
+        edges = new ArrayList<> ();
+        for (int i = 0; i < size; i++)
+            vertices.add (new Vertex<> (i));
+    }
 
-    boolean addVertex (Vertex<T> vertex);
+    public void addEdge (int from, int to, E data) {
+        Vertex<V, E> fromVertex = vertices.get (from);
+        Vertex<V, E> toVertex = vertices.get (to);
+        Edge<E, V> edge = new Edge<> (fromVertex, toVertex, data);
+        edges.add (edge);
+        fromVertex.addEdge (edge);
+        toVertex.addEdge (edge);
+    }
 
-    boolean removeVertex (Vertex<T> vertex);
+    public List<Edge<E, V>> getEdges () {
+        return edges;
+    }
 
-    boolean addEdge (Vertex<T> vertexA, Vertex<T> vertexB);
+    public List<Vertex<V, E>> getVertices () {
+        return Collections.unmodifiableList (vertices);
+    }
 
-    boolean removeEdge (Vertex<T> vertexA, Vertex<T> vertexB);
+    public int size () {
+        return vertices.size ();
+    }
 
+    @Override
+    public String toString () {
+        return "Graph{" +
+                "edges=" + edges +
+                '}';
+    }
 }

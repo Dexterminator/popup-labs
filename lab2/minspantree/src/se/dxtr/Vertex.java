@@ -1,45 +1,51 @@
 package se.dxtr;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by dexter on 05/10/15.
  */
-public class Vertex<T extends Comparable<T>> implements Comparable<Vertex<T>> {
-    private final T id;
+public class Vertex<V, E> {
+    private final int id;
+    private final List<Edge<E, V>> edges;
+    private V data;
 
-    public Vertex (T id) {
+    public Vertex (int id, V data) {
         this.id = id;
+        edges = new ArrayList<> ();
+        this.data = data;
     }
 
-    public T getId () {
+    public Vertex (int id) {
+        this.id = id;
+        edges = new ArrayList<> ();
+        this.data = null;
+    }
+
+    public int getId () {
         return id;
     }
 
-    @Override
-    public boolean equals (Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass () != o.getClass ())
-            return false;
-        Vertex other = (Vertex) o;
-        return Objects.equals (id, other.id);
+    public V getData () {
+        return data;
     }
 
-    @Override
-    public int hashCode () {
-        return Objects.hash (id);
+    public List<Edge> getEdges () {
+        return Collections.unmodifiableList (edges);
     }
 
-    @Override
-    public int compareTo (Vertex<T> o) {
-        return id.compareTo (o.getId ());
+    public void addEdge (Edge<E, V> edge) {
+        edges.add (edge);
     }
 
     @Override
     public String toString () {
         return "Vertex{" +
                 "id=" + id +
+                ", edges=" + edges +
+                ", data=" + data +
                 '}';
     }
 }

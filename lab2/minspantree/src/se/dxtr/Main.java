@@ -1,16 +1,10 @@
 package se.dxtr;
 
-import java.util.Comparator;
-import java.util.Optional;
+import java.util.Set;
 
 public class Main {
 
     static Kattio io = new Kattio (System.in, System.out);
-    private static Comparator<UndirectedEdge<Integer>> edgeComparator =
-            Comparator.comparing (UndirectedEdge<Integer>::getVertexA)
-            .thenComparing (UndirectedEdge<Integer>::getVertexB);
-
-
     public static void main (String[] args) {
         while (io.hasMoreTokens ()) {
             int n = io.getInt ();
@@ -19,20 +13,17 @@ public class Main {
             if (n == 0 && m == 0)
                 break;
 
-            UndirectedGraph<Integer> graph = new UndirectedGraph<> ();
-            for (int i = 0; i < n; i++)
-                graph.addVertex (new Vertex<> (i));
-
+            Graph<Void, Weight> graph = new Graph<> (n);
             for (int i = 0; i < m; i++) {
                 int u = io.getInt ();
                 int v = io.getInt ();
                 int w = io.getInt ();
-                graph.addEdge (new Vertex<> (u), new Vertex<> (v), w);
+                graph.addEdge (u, v, new Weight (w));
             }
 
-            Optional<UndirectedGraph<Integer>> minimumSpanningTree = Kruskal.minimumSpanningTree (graph);
-            if (minimumSpanningTree.isPresent ()) {
-                printSortedTree (minimumSpanningTree.get ());
+            Set<Edge<Weight, Void>> tree = Kruskal.kruskal (graph);
+            if (tree != null) {
+                printTree (tree);
             } else {
                 io.println ("Impossible");
             }
@@ -40,10 +31,15 @@ public class Main {
         io.close ();
     }
 
-    private static void printSortedTree (UndirectedGraph<Integer> tree) {
-        io.println (tree.getCost ());
-        tree.getEdges ().stream ()
-                .sorted (edgeComparator)
-                .forEach (edge -> io.println (edge.getVertexA ().getId () + " " + edge.getVertexB ().getId ()));
+    public static void printTree (Set<Edge<Weight, Void>> tree) {
+        int sum = 0;
+        for (Edge<Weight, Void> edge : tree) {
+            sum += edge.getData ().weight;
+        }
+
+        io.println (sum);
+        for (Edge<Weight, Void> edge : tree) {
+            io.println (edge.getFrom ().getId () + " " + edge.getTo ().getId ());
+        }
     }
 }

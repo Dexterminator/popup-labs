@@ -1,0 +1,42 @@
+package se.dxtr;
+
+/**
+ * Created by dexter on 05/10/15.
+ */
+public class Edge<E, V> {
+    private Vertex<V, E> from;
+    private Vertex<V, E> to;
+    private E data;
+
+    public Edge (Vertex<V, E> from, Vertex<V, E> to, E data) {
+        this.from = from;
+        this.to = to;
+        this.data = data;
+    }
+
+    public Edge (Vertex<V, E> from, Vertex<V, E> to) {
+        this.from = from;
+        this.to = to;
+    }
+
+    public Vertex<V, E> getFrom () {
+        return from;
+    }
+
+    public Vertex<V, E> getTo () {
+        return to;
+    }
+
+    public E getData () {
+        return data;
+    }
+
+    @Override
+    public String toString () {
+        return "Edge{" +
+                "from=" + from.getId () +
+                ", to=" + to.getId () +
+                ", data=" + data +
+                '}';
+    }
+}
