@@ -35,4 +35,11 @@ public class Vertex<T extends Comparable<T>> implements Comparable<Vertex<T>> {
     public int compareTo (Vertex<T> o) {
         return id.compareTo (o.getId ());
     }
+
+    @Override
+    public String toString () {
+        return "Vertex{" +
+                "id=" + id +
+                '}';
+    }
 }

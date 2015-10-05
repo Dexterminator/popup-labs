@@ -5,11 +5,11 @@ import java.util.Objects;
 /**
  * Created by dexter on 05/10/15.
  */
-public class UndirectedEdge {
-    private final Vertex vertexA;
-    private final Vertex vertexB;
+public class UndirectedEdge<T extends Comparable<T>> {
+    private final Vertex<T> vertexA;
+    private final Vertex<T> vertexB;
 
-    public UndirectedEdge (Vertex vertexA, Vertex vertexB) {
+    public UndirectedEdge (Vertex<T> vertexA, Vertex<T> vertexB) {
         if (vertexA.compareTo (vertexB) <= 0) {
             this.vertexA = vertexA;
             this.vertexB = vertexB;
@@ -19,15 +19,15 @@ public class UndirectedEdge {
         }
     }
 
-    public Vertex getVertexA () {
+    public Vertex<T> getVertexA () {
         return vertexA;
     }
 
-    public Vertex getVertexB () {
+    public Vertex<T> getVertexB () {
         return vertexB;
     }
 
-    public boolean containsVertex (Vertex vertex) {
+    public boolean containsVertex (Vertex<T> vertex) {
         if (vertexA.equals (vertex) || vertexB.equals (vertex))
             return true;
         return false;

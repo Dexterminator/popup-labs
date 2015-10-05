@@ -5,10 +5,10 @@ import java.util.*;
 /**
  * Created by dexter on 05/10/15.
  */
-public class UndirectedGraph implements Graph {
-    private Map<Vertex, Set<Vertex>> neighbors;
-    private Set<UndirectedEdge> edges;
-    private Map<UndirectedEdge, Integer> weights;
+public class UndirectedGraph<T extends Comparable<T>> implements Graph<T> {
+    private Map<Vertex<T>, Set<Vertex<T>>> neighbors;
+    private Set<UndirectedEdge<T>> edges;
+    private Map<UndirectedEdge<T>, Integer> weights;
 
     public UndirectedGraph () {
         neighbors = new HashMap<> ();
@@ -16,21 +16,20 @@ public class UndirectedGraph implements Graph {
         weights = new HashMap<> ();
     }
 
-
     @Override
-    public boolean adjacent (Vertex vertexA, Vertex vertexB) {
+    public boolean adjacent (Vertex<T> vertexA, Vertex<T> vertexB) {
         validateVertices (vertexA, vertexB);
         return neighbors.get (vertexA).contains (vertexB);
     }
 
     @Override
-    public Set<Vertex> neighbors (Vertex vertex) {
+    public Set<Vertex<T>> neighbors (Vertex<T> vertex) {
         validateVertex (vertex);
         return Collections.unmodifiableSet (neighbors.get (vertex));
     }
 
     @Override
-    public boolean addVertex (Vertex vertex) {
+    public boolean addVertex (Vertex<T> vertex) {
         if (!graphContains (vertex)) {
             neighbors.put (vertex, new HashSet<> ());
             return true;
@@ -40,7 +39,7 @@ public class UndirectedGraph implements Graph {
     }
 
     @Override
-    public boolean removeVertex (Vertex vertex) {
+    public boolean removeVertex (Vertex<T> vertex) {
         if (!graphContains (vertex))
             return false;
 
@@ -49,21 +48,32 @@ public class UndirectedGraph implements Graph {
     }
 
     @Override
-    public boolean addEdge (Vertex vertexA, Vertex vertexB) {
+    public boolean addEdge (Vertex<T> vertexA, Vertex<T> vertexB) {
         validateVertices (vertexA, vertexB);
-        UndirectedEdge edge = new UndirectedEdge (vertexA, vertexB);
+        UndirectedEdge<T> edge = new UndirectedEdge<> (vertexA, vertexB);
+        return addEdge (edge);
+    }
+
+    public boolean addEdge (Vertex<T> vertexA, Vertex<T> vertexB, int weight) {
+        validateVertices (vertexA, vertexB);
+        UndirectedEdge<T> edge = new UndirectedEdge<> (vertexA, vertexB);
+        weights.put (edge, weight);
+        return addEdge (edge);
+    }
+
+    private boolean addEdge (UndirectedEdge<T> edge) {
         if (edges.contains (edge))
             return false;
-        neighbors.get (vertexA).add (vertexB);
-        neighbors.get (vertexB).add (vertexB);
+        neighbors.get (edge.getVertexA ()).add (edge.getVertexB ());
+        neighbors.get (edge.getVertexB ()).add (edge.getVertexA ());
         edges.add (edge);
         return true;
     }
 
     @Override
-    public boolean removeEdge (Vertex vertexA, Vertex vertexB) {
+    public boolean removeEdge (Vertex<T> vertexA, Vertex<T> vertexB) {
         validateVertices (vertexA, vertexB);
-        UndirectedEdge edge = new UndirectedEdge (vertexA, vertexB);
+        UndirectedEdge<T> edge = new UndirectedEdge<> (vertexA, vertexB);
         if (!edges.contains (edge))
             return false;
 
@@ -73,17 +83,31 @@ public class UndirectedGraph implements Graph {
         return true;
     }
 
-    private void validateVertex (Vertex vertex) {
+    public int getWeight (Vertex<T> vertexA, Vertex<T> vertexB) {
+        validateVertices (vertexA, vertexB);
+        UndirectedEdge<T> edge = new UndirectedEdge<> (vertexA, vertexB);
+        validateEdge (edge);
+        return weights.get (edge);
+    }
+
+    private void validateEdge (UndirectedEdge<T> edge) {
+        if (!edges.contains (edge)) {
+            throw new NoSuchElementException ("There is no edge between " + edge.getVertexA ().getId () + " and " +
+                    edge.getVertexB ().getId ());
+        }
+    }
+
+    private void validateVertex (Vertex<T> vertex) {
         if (!graphContains (vertex))
             throw new NoSuchElementException ("Graph does not contain vertex: " + vertex.getId ());
     }
 
-    private void validateVertices (Vertex vertexA, Vertex vertexB) {
+    private void validateVertices (Vertex<T> vertexA, Vertex<T> vertexB) {
         validateVertex (vertexA);
         validateVertex (vertexB);
     }
 
-    private boolean graphContains (Vertex vertex) {
+    private boolean graphContains (Vertex<T> vertex) {
         return neighbors.containsKey (vertex);
     }
 

@@ -5,17 +5,17 @@ import java.util.Set;
 /**
  * Created by dexter on 05/10/15.
  */
-public interface Graph {
+public interface Graph<T extends Comparable<T>> {
 
-    boolean adjacent (Vertex vertexA, Vertex vertexB);
+    boolean adjacent (Vertex<T> vertexA, Vertex<T> vertexB);
 
-    Set<Vertex> neighbors (Vertex vertex);
+    Set<Vertex<T>> neighbors (Vertex<T> vertex);
 
-    boolean addVertex (Vertex vertex);
+    boolean addVertex (Vertex<T> vertex);
 
-    boolean removeVertex (Vertex vertex);
+    boolean removeVertex (Vertex<T> vertex);
 
-    boolean addEdge (Vertex vertexA, Vertex vertexB);
+    boolean addEdge (Vertex<T> vertexA, Vertex<T> vertexB);
 
-    boolean removeEdge (Vertex vertexA, Vertex vertexB);
+    boolean removeEdge (Vertex<T> vertexA, Vertex<T> vertexB);
 }
