@@ -6,6 +6,10 @@ import java.util.Optional;
 public class Main {
 
     static Kattio io = new Kattio (System.in, System.out);
+    private static Comparator<UndirectedEdge<Integer>> edgeComparator =
+            Comparator.comparing (UndirectedEdge<Integer>::getVertexA)
+            .thenComparing (UndirectedEdge<Integer>::getVertexB);
+
 
     public static void main (String[] args) {
         while (io.hasMoreTokens ()) {
@@ -38,9 +42,6 @@ public class Main {
 
     private static void printSortedTree (UndirectedGraph<Integer> tree) {
         io.println (tree.getCost ());
-        Comparator<UndirectedEdge<Integer>> edgeComparator =
-                Comparator.comparing (UndirectedEdge<Integer>::getVertexA)
-                        .thenComparing (UndirectedEdge<Integer>::getVertexB);
         tree.getEdges ().stream ()
                 .sorted (edgeComparator)
                 .forEach (edge -> io.println (edge.getVertexA ().getId () + " " + edge.getVertexB ().getId ()));

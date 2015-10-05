@@ -30,6 +30,7 @@ public class Kruskal {
                 tree.addEdge (edge, graph.getWeight (edge));
             }
         }
+
         return Optional.of (tree);
     }
 
