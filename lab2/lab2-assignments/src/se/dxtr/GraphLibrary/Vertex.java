@@ -10,7 +10,7 @@ import java.util.List;
 public class Vertex<V, E> {
     private final int id;
     private final List<Edge<V, E>> edges;
-    private final V data;
+    private V data;
 
     public Vertex (int id, V data) {
         this.id = id;
@@ -30,6 +30,10 @@ public class Vertex<V, E> {
 
     public V getData () {
         return data;
+    }
+
+    public void setData (V data) {
+        this.data = data;
     }
 
     public List<Edge> getEdges () {

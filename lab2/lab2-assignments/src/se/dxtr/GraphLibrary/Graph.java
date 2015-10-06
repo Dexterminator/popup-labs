@@ -18,6 +18,10 @@ public class Graph<V, E> {
             vertices.add (new Vertex<> (i));
     }
 
+    public void addEdge (int from, int to) {
+        addEdge (from, to, null);
+    }
+
     public void addEdge (int from, int to, E data) {
         Vertex<V, E> fromVertex = vertices.get (from);
         Vertex<V, E> toVertex = vertices.get (to);

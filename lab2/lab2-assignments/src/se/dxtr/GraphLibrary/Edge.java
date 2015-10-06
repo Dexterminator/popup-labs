@@ -35,8 +35,8 @@ public class Edge<V, E> {
     @Override
     public String toString () {
         return "Edge{" +
-                "from=" + from.getId () +
-                ", to=" + to.getId () +
+                "from=" + from.getId () + ": " + from.getData () +
+                ", to=" + to.getId () + ": " + to.getData () +
                 ", data=" + data +
                 '}';
     }
