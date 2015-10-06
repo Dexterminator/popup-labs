@@ -31,6 +31,14 @@ public class Graph<V, E> {
         toVertex.addEdge (edge);
     }
 
+    public void addDirectedEdge (int from, int to, E data) {
+        Vertex<V, E> fromVertex = vertices.get (from);
+        Vertex<V, E> toVertex = vertices.get (to);
+        Edge<V, E> edge = new Edge<> (fromVertex, toVertex, data);
+        edges.add (edge);
+        fromVertex.addEdge (edge);
+    }
+
     public List<Edge<V, E>> getEdges () {
         return Collections.unmodifiableList (edges);
     }
