@@ -1,5 +1,8 @@
 package se.dxtr.graphlibrary;
 
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -8,12 +11,20 @@ import java.util.TreeSet;
 public class Dijkstra {
 
     public static DijkstraResult shortestPath (Graph<Void, Weight> graph, Vertex<Void, Weight> start) {
-        int[] distance = new int[graph.getVertices ().size ()];
+        long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
 
-        TreeSet<Vertex<Void, Weight>> queue =
-                new TreeSet<> ((vertex1, vertex2) -> distance[vertex1.getId ()] - distance[vertex2.getId ()]);
+        TreeSet<Vertex<Void, Weight>> queue = new TreeSet<> ((vertex1, vertex2) -> {
+            if (distance[vertex1.getId ()] == distance[vertex2.getId ()]) {
+                return vertex1.getId () - vertex2.getId ();
+            }
+
+            if (distance[vertex1.getId ()] - distance[vertex2.getId ()] < 0)
+                return -1;
+            return 1;
+        });
+
         for (Vertex<Void, Weight> vertex : graph.getVertices ()) {
             if (vertex.getId () != start.getId ()) {
                 distance[vertex.getId ()] = Integer.MAX_VALUE;
@@ -25,8 +36,8 @@ public class Dijkstra {
         while (!queue.isEmpty ()) {
             Vertex<Void, Weight> current = queue.pollFirst ();
             for (Edge<Void, Weight> edge : current.getEdges ()) {
-                Vertex to = edge.getTo ();
-                int altternativeDistance = distance[current.getId ()] + edge.getData ().weight;
+                Vertex<Void, Weight> to = edge.getTo ();
+                long altternativeDistance = distance[current.getId ()] + edge.getData ().weight;
                 if (altternativeDistance < distance[to.getId ()]) {
                     distance[to.getId ()] = altternativeDistance;
                     parent[to.getId ()] = current;
@@ -41,9 +52,9 @@ public class Dijkstra {
 
     public static class DijkstraResult {
         public final Vertex[] parent;
-        public final int[] distance;
+        public final long[] distance;
 
-        public DijkstraResult (int[] distance, Vertex[] parent) {
+        public DijkstraResult (long[] distance, Vertex[] parent) {
             this.parent = parent;
             this.distance = distance;
         }

@@ -34,7 +34,7 @@ public class Vertex<V, E> {
         this.data = data;
     }
 
-    public List<Edge> getEdges () {
+    public List<Edge<V, E>> getEdges () {
         return Collections.unmodifiableList (edges);
     }
 

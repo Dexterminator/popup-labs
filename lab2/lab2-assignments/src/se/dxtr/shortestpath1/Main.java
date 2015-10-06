@@ -32,7 +32,7 @@ public class Main {
             }
 
             Dijkstra.DijkstraResult dijkstraResult = Dijkstra.shortestPath (graph, graph.getVertices ().get (s));
-            int[] distance = dijkstraResult.distance;
+            long[] distance = dijkstraResult.distance;
             for (int i = 0; i < q; i++) {
                 int vertexId = io.getInt ();
                 if (distance[vertexId] != Integer.MAX_VALUE) {
