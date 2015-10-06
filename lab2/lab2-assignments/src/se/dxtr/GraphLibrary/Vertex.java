@@ -53,8 +53,7 @@ public class Vertex<V, E> {
         boolean removed = false;
         while (i.hasNext () && !removed) {
             Edge<V, E> edge = i.next ();
-            if (edge.getFrom ().getId () == other.getId () ||
-                    edge.getTo ().getId () == other.getId ()) {
+            if (edge.getFrom ().getId () == other.getId () || edge.getTo ().getId () == other.getId ()) {
                 i.remove ();
                 removed = true;
             }
