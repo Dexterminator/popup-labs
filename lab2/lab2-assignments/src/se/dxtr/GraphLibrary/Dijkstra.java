@@ -1,8 +1,5 @@
 package se.dxtr.graphlibrary;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -37,9 +34,9 @@ public class Dijkstra {
             Vertex<Void, Weight> current = queue.pollFirst ();
             for (Edge<Void, Weight> edge : current.getEdges ()) {
                 Vertex<Void, Weight> to = edge.getTo ();
-                long altternativeDistance = distance[current.getId ()] + edge.getData ().weight;
-                if (altternativeDistance < distance[to.getId ()]) {
-                    distance[to.getId ()] = altternativeDistance;
+                long alternativeDistance = distance[current.getId ()] + edge.getData ().weight;
+                if (alternativeDistance < distance[to.getId ()]) {
+                    distance[to.getId ()] = alternativeDistance;
                     parent[to.getId ()] = current;
                     queue.remove (to);
                     queue.add (to);
@@ -48,6 +45,21 @@ public class Dijkstra {
         }
 
         return new DijkstraResult (distance, parent);
+    }
+
+    public static DijkstraResult shortestTimeTablePath (Graph<Void, TimeTable> graph, Vertex<Void, TimeTable> start) {
+        long[] distance = new long[graph.getVertices ().size ()];
+        Vertex[] parent = new Vertex[graph.getVertices ().size ()];
+        distance[start.getId ()] = 0;
+        long time = 0;
+
+        for (Vertex<Void, TimeTable> vertex : graph.getVertices ()) {
+            if (vertex.getId () != start.getId ()) {
+                distance[vertex.getId ()] = Integer.MAX_VALUE;
+                parent[vertex.getId ()] = null;
+            }
+        }
+        return null;
     }
 
     public static class DijkstraResult {
