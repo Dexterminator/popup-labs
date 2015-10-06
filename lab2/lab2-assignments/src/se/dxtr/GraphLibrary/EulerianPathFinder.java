@@ -28,12 +28,14 @@ public class EulerianPathFinder {
         Deque<Vertex<Void, Void>> stack = new LinkedList<> ();
         List<Vertex<Void, Void>> path = new ArrayList<> ();
         int removed = 0;
-        while (true) {
+        boolean done = false;
+        while (!done) {
             if (current.degree () == 0) {
                 path.add (current);
                 if (stack.isEmpty ())
-                    break;
-                current = stack.pop ();
+                    done = true;
+                else
+                    current = stack.pop ();
             } else {
                 stack.push (current);
                 Vertex<Void, Void> next = current.getNeighbor (0);
