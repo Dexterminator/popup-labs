@@ -1,9 +1,8 @@
 package se.dxtr.eulerianpath;
 
-import se.dxtr.graphlibrary.Graph;
-import se.dxtr.graphlibrary.Kattio;
-import se.dxtr.graphlibrary.Vertex;
-import se.dxtr.graphlibrary.Visited;
+import se.dxtr.graphlibrary.*;
+
+import java.util.List;
 
 public class Main {
 
@@ -25,7 +24,15 @@ public class Main {
                 int v = io.getInt ();
                 graph.addEdge (u, v);
             }
-            io.println (graph);
+
+            List<Vertex<Visited, Void>> eulerianPath = EulerianPathFinder.findEulerianPath (graph);
+            if (eulerianPath == null) {
+                io.println ("Impossible");
+            } else {
+                for (Vertex<Visited, Void> vertex : eulerianPath)
+                    io.print (vertex.getId () + " ");
+                io.println ();
+            }
         }
 
         io.close ();
