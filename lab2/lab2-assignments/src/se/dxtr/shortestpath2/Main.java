@@ -1,5 +1,6 @@
 package se.dxtr.shortestpath2;
 
+import se.dxtr.graphlibrary.Dijkstra;
 import se.dxtr.graphlibrary.Graph;
 import se.dxtr.graphlibrary.Kattio;
 import se.dxtr.graphlibrary.TimeTable;
@@ -31,6 +32,21 @@ public class Main {
                 int d = io.getInt ();
                 graph.addDirectedEdge (u, v, new TimeTable (t0, p, d));
             }
+
+            Dijkstra.DijkstraResult result =
+                    Dijkstra.shortestTimeTablePath (graph, graph.getVertices ().get (s));
+            long[] distance = result.distance;
+
+            for (int i = 0; i < q; i++) {
+                int vertexId = io.getInt ();
+                if (distance[vertexId] != Integer.MAX_VALUE) {
+                    io.println (distance[vertexId]);
+//                    printPath (vertexId, dijkstraResult.parent);
+                } else {
+                    io.println ("Impossible");
+                }
+            }
+            io.println ();
         }
         io.close ();
     }
