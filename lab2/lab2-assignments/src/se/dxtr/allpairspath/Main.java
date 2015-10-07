@@ -27,19 +27,14 @@ public class Main {
                 int w = io.getInt ();
                 graph.addDirectedEdge(u, v, new Weight(w));
             }
-            FloydWarshall.AllPairsResult allPairsResult = FloydWarshall.shortestPath(graph);
+            int[][] distMatrix = FloydWarshall.shortestPath(graph);
             for (int i = 0; i < q; i++) {
                 int from = io.getInt();
                 int to = io.getInt();
 
-                int dist = allPairsResult.dist[from][to];
-//                for (int j = 0; j < allPairsResult.dist.length; j++) {
-//                    io.println(Arrays.toString(allPairsResult.dist[j]));
-//                }
+                int dist = distMatrix[from][to];
                 if(dist == Integer.MAX_VALUE)
                     io.println("Impossible");
-//                else if (allPairsResult.dist[from][from] < 0 || allPairsResult.dist[to][to] < 0)
-//                    io.println("-Infinity");
                 else if(dist == Integer.MIN_VALUE)
                     io.println("-Infinity");
                 else
