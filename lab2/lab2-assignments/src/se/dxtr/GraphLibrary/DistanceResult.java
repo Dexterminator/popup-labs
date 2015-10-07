@@ -17,7 +17,7 @@ public class DistanceResult {
     }
 
 
-    public static List<Integer> getPath (int vertexId, Vertex[] parent) {
+    public List<Integer> getPath (int vertexId) {
         int currentId = vertexId;
         List<Integer> ids = new ArrayList<>();
         while (true) {
