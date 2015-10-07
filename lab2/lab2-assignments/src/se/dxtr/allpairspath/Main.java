@@ -2,6 +2,8 @@ package se.dxtr.allpairspath;
 
 import se.dxtr.graphlibrary.*;
 
+import java.util.Arrays;
+
 /**
  * Created by Ludde on 15-10-07.
  */
@@ -31,15 +33,20 @@ public class Main {
                 int to = io.getInt();
 
                 int dist = allPairsResult.dist[from][to];
+//                for (int j = 0; j < allPairsResult.dist.length; j++) {
+//                    io.println(Arrays.toString(allPairsResult.dist[j]));
+//                }
                 if(dist == Integer.MAX_VALUE)
                     io.println("Impossible");
-                else if(from == to)
+                else if(from == to && allPairsResult.dist[from][to] > 0)
                     io.println(0);
+                else if (allPairsResult.dist[from][from] < 0 || allPairsResult.dist[to][to] < 0)
+                    io.println("-Infinity");
                 else
                     io.println(dist);
 
             }
-            io.println ();
+            io.println();
         }
 
         io.close ();
