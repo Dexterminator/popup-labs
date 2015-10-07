@@ -31,9 +31,20 @@ public class BellmanFord {
 
         for (Edge<Void, Weight> edge : edgeList) {
             if(distance[edge.getFrom().getId()] + edge.getData().weight < distance[edge.getTo().getId()]) {
-                distance[edge.getTo().getId()] = Integer.MIN_VALUE;
+                infect(graph, distance, edge.getTo().getId());
+                //distance[edge.getTo().getId()] = Integer.MIN_VALUE;
             }
         }
         return new DistanceResult(distance, parent);
+    }
+
+    public static void infect(Graph<Void, Weight> graph, long[] distance, int vertexId){
+        if(distance[vertexId] > Integer.MIN_VALUE){
+            distance[vertexId] = Integer.MIN_VALUE;
+            for (Edge<Void, Weight> edge : graph.getVertices().get(vertexId).getEdges()) {
+                infect(graph, distance, edge.getTo().getId());
+            }
+        }
+
     }
 }
