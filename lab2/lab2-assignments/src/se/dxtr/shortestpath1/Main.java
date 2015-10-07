@@ -31,7 +31,7 @@ public class Main {
                 graph.addDirectedEdge (u, v, new Weight (w));
             }
 
-            Dijkstra.DijkstraResult dijkstraResult = Dijkstra.shortestPath (graph, graph.getVertices ().get (s));
+            DistanceResult dijkstraResult = Dijkstra.shortestPath (graph, graph.getVertices ().get (s));
             long[] distance = dijkstraResult.distance;
             for (int i = 0; i < q; i++) {
 //                io.println ("new query");

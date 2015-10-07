@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class Dijkstra {
 
-    public static DijkstraResult shortestPath (Graph<Void, Weight> graph, Vertex<Void, Weight> start) {
+    public static DistanceResult shortestPath (Graph<Void, Weight> graph, Vertex<Void, Weight> start) {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
@@ -44,10 +44,10 @@ public class Dijkstra {
             }
         }
 
-        return new DijkstraResult (distance, parent);
+        return new DistanceResult(distance, parent);
     }
 
-    public static DijkstraResult shortestTimeTablePath (Graph<Void, TimeTable> graph, Vertex<Void, TimeTable> start) {
+    public static DistanceResult shortestTimeTablePath (Graph<Void, TimeTable> graph, Vertex<Void, TimeTable> start) {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
@@ -101,16 +101,16 @@ public class Dijkstra {
             }
         }
 
-        return new DijkstraResult (distance, parent);
+        return new DistanceResult(distance, parent);
     }
 
-    public static class DijkstraResult {
-        public final Vertex[] parent;
-        public final long[] distance;
-
-        public DijkstraResult (long[] distance, Vertex[] parent) {
-            this.parent = parent;
-            this.distance = distance;
-        }
-    }
+//    public static class DijkstraResult {
+//        public final Vertex[] parent;
+//        public final long[] distance;
+//
+//        public DijkstraResult (long[] distance, Vertex[] parent) {
+//            this.parent = parent;
+//            this.distance = distance;
+//        }
+//    }
 }
