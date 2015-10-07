@@ -1,4 +1,4 @@
-package se.dxtr.bellmanford;
+package se.dxtr.shortestpath3;
 
 import se.dxtr.graphlibrary.*;
 
