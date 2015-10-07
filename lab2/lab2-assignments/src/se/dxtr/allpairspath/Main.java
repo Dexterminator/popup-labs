@@ -25,7 +25,7 @@ public class Main {
                 int u = io.getInt ();
                 int v = io.getInt ();
                 int w = io.getInt ();
-                graph.addDirectedEdge (u, v, new Weight (w));
+                graph.addDirectedEdge(u, v, new Weight(w));
             }
             FloydWarshall.AllPairsResult allPairsResult = FloydWarshall.shortestPath(graph);
             for (int i = 0; i < q; i++) {
@@ -38,9 +38,9 @@ public class Main {
 //                }
                 if(dist == Integer.MAX_VALUE)
                     io.println("Impossible");
-                else if(from == to && allPairsResult.dist[from][to] > 0)
-                    io.println(0);
-                else if (allPairsResult.dist[from][from] < 0 || allPairsResult.dist[to][to] < 0)
+//                else if (allPairsResult.dist[from][from] < 0 || allPairsResult.dist[to][to] < 0)
+//                    io.println("-Infinity");
+                else if(dist == Integer.MIN_VALUE)
                     io.println("-Infinity");
                 else
                     io.println(dist);
