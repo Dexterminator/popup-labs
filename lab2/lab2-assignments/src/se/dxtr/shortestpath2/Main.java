@@ -1,9 +1,6 @@
 package se.dxtr.shortestpath2;
 
-import se.dxtr.graphlibrary.Dijkstra;
-import se.dxtr.graphlibrary.Graph;
-import se.dxtr.graphlibrary.Kattio;
-import se.dxtr.graphlibrary.TimeTable;
+import se.dxtr.graphlibrary.*;
 
 /**
  * Created by dexter on 06/10/15.
@@ -33,7 +30,7 @@ public class Main {
                 graph.addDirectedEdge (u, v, new TimeTable (t0, p, d));
             }
 
-            Dijkstra.DijkstraResult result =
+            DistanceResult result =
                     Dijkstra.shortestTimeTablePath (graph, graph.getVertices ().get (s));
             long[] distance = result.distance;
 
