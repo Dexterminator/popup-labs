@@ -21,12 +21,19 @@ public class BellmanFord {
         List<Vertex<Void, Weight>> vertexList = graph.getVertices();
         List<Edge<Void, Weight>> edgeList = graph.getEdges();
         for (int i = 0; i < vertexList.size(); i++) {
-            for (Edge<Void, Weight> edge : edgeList) {
+            int currID = vertexList.get(i).getId();
+            for (Edge<Void, Weight> edge : vertexList.get(currID).getEdges()) {
                 if(distance[edge.getFrom().getId()] + edge.getData().weight < distance[edge.getTo().getId()]){
                     distance[edge.getTo().getId()] = distance[edge.getFrom().getId()] + edge.getData().weight;
                     parent[edge.getTo().getId()] = edge.getFrom();
                 }
             }
+//            for (Edge<Void, Weight> edge : edgeList) {
+//                if(distance[edge.getFrom().getId()] + edge.getData().weight < distance[edge.getTo().getId()]){
+//                    distance[edge.getTo().getId()] = distance[edge.getFrom().getId()] + edge.getData().weight;
+//                    parent[edge.getTo().getId()] = edge.getFrom();
+//                }
+//            }
         }
 
         for (Edge<Void, Weight> edge : edgeList) {
