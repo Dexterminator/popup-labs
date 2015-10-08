@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Created by dexter on 05/10/15.
  */
-public class Graph<V, E> {
-    private final List<Vertex<V, E>> vertices;
-    private final List<Edge<V, E>> edges;
+public class Graph<E> {
+    private final List<Vertex<E>> vertices;
+    private final List<Edge<E>> edges;
 
     public Graph (int size) {
         vertices = new ArrayList<> ();
@@ -23,27 +23,27 @@ public class Graph<V, E> {
     }
 
     public void addEdge (int from, int to, E data) {
-        Vertex<V, E> fromVertex = vertices.get (from);
-        Vertex<V, E> toVertex = vertices.get (to);
-        Edge<V, E> edge = new Edge<> (fromVertex, toVertex, data);
+        Vertex<E> fromVertex = vertices.get (from);
+        Vertex<E> toVertex = vertices.get (to);
+        Edge<E> edge = new Edge<> (fromVertex, toVertex, data);
         edges.add (edge);
         fromVertex.addEdge (edge);
         toVertex.addEdge (edge);
     }
 
     public void addDirectedEdge (int from, int to, E data) {
-        Vertex<V, E> fromVertex = vertices.get (from);
-        Vertex<V, E> toVertex = vertices.get (to);
-        Edge<V, E> edge = new Edge<> (fromVertex, toVertex, data);
+        Vertex<E> fromVertex = vertices.get (from);
+        Vertex<E> toVertex = vertices.get (to);
+        Edge<E> edge = new Edge<> (fromVertex, toVertex, data);
         edges.add (edge);
         fromVertex.addEdge (edge);
     }
 
-    public List<Edge<V, E>> getEdges () {
+    public List<Edge<E>> getEdges () {
         return Collections.unmodifiableList (edges);
     }
 
-    public List<Vertex<V, E>> getVertices () {
+    public List<Vertex<E>> getVertices () {
         return Collections.unmodifiableList (vertices);
     }
 

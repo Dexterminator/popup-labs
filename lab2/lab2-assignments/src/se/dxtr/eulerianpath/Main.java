@@ -15,18 +15,18 @@ public class Main {
             if (n == 0 && m == 0)
                 break;
 
-            Graph<Void, Void> graph = new Graph<> (n);
+            Graph<Void> graph = new Graph<> (n);
             for (int i = 0; i < m; i++) {
                 int u = io.getInt ();
                 int v = io.getInt ();
                 graph.addEdge (u, v);
             }
 
-            List<Vertex<Void, Void>> eulerianPath = EulerianPathFinder.findEulerianPath (graph);
+            List<Vertex<Void>> eulerianPath = EulerianPathFinder.findEulerianPath (graph);
             if (eulerianPath == null) {
                 io.println ("Impossible");
             } else {
-                for (Vertex<Void, Void> vertex : eulerianPath)
+                for (Vertex<Void> vertex : eulerianPath)
                     io.print (vertex.getId () + " ");
                 io.println ();
             }

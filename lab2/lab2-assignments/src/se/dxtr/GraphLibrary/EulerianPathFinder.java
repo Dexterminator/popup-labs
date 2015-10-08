@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
  */
 public class EulerianPathFinder {
 
-    public static List<Vertex<Void, Void>> findEulerianPath (Graph<Void, Void> graph) {
-        List<Vertex<Void, Void>> oddDegreeVertices = graph.getVertices ().stream ()
+    public static List<Vertex<Void>> findEulerianPath (Graph<Void> graph) {
+        List<Vertex<Void>> oddDegreeVertices = graph.getVertices ().stream ()
                 .filter (vertex -> vertex.degree () % 2 != 0)
                 .collect (Collectors.toList ());
 
-        Vertex<Void, Void> current;
+        Vertex<Void> current;
         if (oddDegreeVertices.size () == 0) {
             current = graph.getVertices ().get (0);
         } else if (oddDegreeVertices.size () == 2) {
@@ -25,8 +25,8 @@ public class EulerianPathFinder {
             return null;
         }
 
-        Deque<Vertex<Void, Void>> stack = new LinkedList<> ();
-        List<Vertex<Void, Void>> path = new ArrayList<> ();
+        Deque<Vertex<Void>> stack = new LinkedList<> ();
+        List<Vertex<Void>> path = new ArrayList<> ();
         int removed = 0;
         boolean done = false;
         while (!done) {
@@ -38,7 +38,7 @@ public class EulerianPathFinder {
                     current = stack.pop ();
             } else {
                 stack.push (current);
-                Vertex<Void, Void> next = current.getNeighbor (0);
+                Vertex<Void> next = current.getNeighbor (0);
                 current.removeEdge (next);
                 next.removeEdge (current);
                 current = next;

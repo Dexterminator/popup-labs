@@ -6,7 +6,7 @@ import java.util.*;
  * Created by dexter on 05/10/15.
  */
 public class Kruskal {
-    static Comparator<Edge<Void, Weight>> weightEdgeComparator =
+    static Comparator<Edge<Weight>> weightEdgeComparator =
             (edge1, edge2) -> edge1.getData ().weight - edge2.getData ().weight;
 
     static Comparator<Edge> lexicoGraphicalOrder = (edge1, edge2) -> {
@@ -15,13 +15,13 @@ public class Kruskal {
         return edge1.getFrom ().getId () - edge2.getFrom ().getId ();
     };
 
-    static public Set<Edge<Void, Weight>> kruskal (Graph<Void, Weight> graph) {
+    static public Set<Edge<Weight>> kruskal (Graph<Weight> graph) {
         DisjointSets sets = new DisjointSets (graph.size ());
-        List<Edge<Void, Weight>> edges = new ArrayList<> (graph.getEdges ());
+        List<Edge<Weight>> edges = new ArrayList<> (graph.getEdges ());
         edges.sort (weightEdgeComparator);
-        SortedSet<Edge<Void, Weight>> tree = new TreeSet<> (lexicoGraphicalOrder);
+        SortedSet<Edge<Weight>> tree = new TreeSet<> (lexicoGraphicalOrder);
 
-        for (Edge<Void, Weight> edge : edges) {
+        for (Edge<Weight> edge : edges) {
             int a = edge.getFrom ().getId ();
             int b = edge.getTo ().getId ();
             if (!sets.inSameSet (a, b)) {
@@ -35,7 +35,7 @@ public class Kruskal {
         return null;
     }
 
-    public static boolean isSpanningTree (SortedSet<Edge<Void, Weight>> tree, Graph<Void, Weight> graph) {
+    public static boolean isSpanningTree (SortedSet<Edge<Weight>> tree, Graph<Weight> graph) {
         return tree.size () == graph.size () - 1;
     }
 

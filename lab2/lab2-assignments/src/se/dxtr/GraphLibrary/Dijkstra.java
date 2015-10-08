@@ -7,12 +7,12 @@ import java.util.*;
  */
 public class Dijkstra {
 
-    public static DistanceResult shortestPath (Graph<Void, Weight> graph, Vertex<Void, Weight> start) {
+    public static DistanceResult shortestPath (Graph<Weight> graph, Vertex<Weight> start) {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
 
-        TreeSet<Vertex<Void, Weight>> queue = new TreeSet<> ((vertex1, vertex2) -> {
+        TreeSet<Vertex<Weight>> queue = new TreeSet<> ((vertex1, vertex2) -> {
             if (distance[vertex1.getId ()] == distance[vertex2.getId ()]) {
                 return vertex1.getId () - vertex2.getId ();
             }
@@ -22,7 +22,7 @@ public class Dijkstra {
             return 1;
         });
 
-        for (Vertex<Void, Weight> vertex : graph.getVertices ()) {
+        for (Vertex<Weight> vertex : graph.getVertices ()) {
             if (vertex.getId () != start.getId ()) {
                 distance[vertex.getId ()] = Integer.MAX_VALUE;
                 parent[vertex.getId ()] = null;
@@ -31,9 +31,9 @@ public class Dijkstra {
         }
 
         while (!queue.isEmpty ()) {
-            Vertex<Void, Weight> current = queue.pollFirst ();
-            for (Edge<Void, Weight> edge : current.getEdges ()) {
-                Vertex<Void, Weight> to = edge.getTo ();
+            Vertex<Weight> current = queue.pollFirst ();
+            for (Edge<Weight> edge : current.getEdges ()) {
+                Vertex<Weight> to = edge.getTo ();
                 long alternativeDistance = distance[current.getId ()] + edge.getData ().weight;
                 if (alternativeDistance < distance[to.getId ()]) {
                     distance[to.getId ()] = alternativeDistance;
@@ -47,12 +47,12 @@ public class Dijkstra {
         return new DistanceResult (distance, parent);
     }
 
-    public static DistanceResult shortestTimeTablePath (Graph<Void, TimeTable> graph, Vertex<Void, TimeTable> start) {
+    public static DistanceResult shortestTimeTablePath (Graph<TimeTable> graph, Vertex<TimeTable> start) {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
 
-        TreeSet<Vertex<Void, TimeTable>> queue = new TreeSet<> ((vertex1, vertex2) -> {
+        TreeSet<Vertex<TimeTable>> queue = new TreeSet<> ((vertex1, vertex2) -> {
             if (distance[vertex1.getId ()] == distance[vertex2.getId ()]) {
                 return vertex1.getId () - vertex2.getId ();
             }
@@ -62,7 +62,7 @@ public class Dijkstra {
             return 1;
         });
 
-        for (Vertex<Void, TimeTable> vertex : graph.getVertices ()) {
+        for (Vertex<TimeTable> vertex : graph.getVertices ()) {
             if (vertex.getId () != start.getId ()) {
                 distance[vertex.getId ()] = Integer.MAX_VALUE;
                 parent[vertex.getId ()] = null;
@@ -71,9 +71,9 @@ public class Dijkstra {
         }
 
         while (!queue.isEmpty ()) {
-            Vertex<Void, TimeTable> current = queue.pollFirst ();
-            for (Edge<Void, TimeTable> edge : current.getEdges ()) {
-                Vertex<Void, TimeTable> to = edge.getTo ();
+            Vertex<TimeTable> current = queue.pollFirst ();
+            for (Edge<TimeTable> edge : current.getEdges ()) {
+                Vertex<TimeTable> to = edge.getTo ();
                 TimeTable timeTable = edge.getData ();
                 if (timeTable.interval != 0 || (timeTable.interval == 0 && timeTable.t0 >= distance[current.getId ()])) {
                     long alternativeDistance;

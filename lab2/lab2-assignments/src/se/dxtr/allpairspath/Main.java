@@ -1,8 +1,9 @@
 package se.dxtr.allpairspath;
 
-import se.dxtr.graphlibrary.*;
-
-import java.util.Arrays;
+import se.dxtr.graphlibrary.FloydWarshall;
+import se.dxtr.graphlibrary.Graph;
+import se.dxtr.graphlibrary.Kattio;
+import se.dxtr.graphlibrary.Weight;
 
 /**
  * Created by Ludde on 15-10-07.
@@ -20,7 +21,7 @@ public class Main {
             if (n == 0 && m == 0 && q == 0)
                 break;
 
-            Graph<Void, Weight> graph = new Graph<> (n);
+            Graph<Weight> graph = new Graph<> (n);
             for (int i = 0; i < m; i++) {
                 int u = io.getInt ();
                 int v = io.getInt ();

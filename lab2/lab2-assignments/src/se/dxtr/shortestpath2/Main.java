@@ -20,7 +20,7 @@ public class Main {
                 break;
             }
 
-            Graph<Void, TimeTable> graph = new Graph<> (n);
+            Graph<TimeTable> graph = new Graph<> (n);
             for (int i = 0; i < m; i++) {
                 int u = io.getInt ();
                 int v = io.getInt ();

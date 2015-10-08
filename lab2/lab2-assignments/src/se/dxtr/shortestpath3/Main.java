@@ -19,7 +19,7 @@ public class Main {
                 break;
             }
 
-            Graph<Void, Weight> graph = new Graph<>(n);
+            Graph<Weight> graph = new Graph<>(n);
             for (int i = 0; i < m; i++) {
                 int u = io.getInt();
                 int v = io.getInt();

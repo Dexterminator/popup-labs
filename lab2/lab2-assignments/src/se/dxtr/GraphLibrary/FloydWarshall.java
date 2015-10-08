@@ -6,9 +6,9 @@ import java.util.List;
  * Created by dexter on 07/10/15.
  */
 public class FloydWarshall {
-    public static int[][] shortestPath (Graph<Void, Weight> graph) {
-        List<Vertex<Void, Weight>> vertices = graph.getVertices ();
-        List<Edge<Void, Weight>> edges = graph.getEdges ();
+    public static int[][] shortestPath (Graph<Weight> graph) {
+        List<Vertex<Weight>> vertices = graph.getVertices ();
+        List<Edge<Weight>> edges = graph.getEdges ();
         int[][] dist = new int[vertices.size ()][vertices.size ()];
         for (int i = 0; i < vertices.size (); i++) {
             for (int j = 0; j < vertices.size (); j++) {
@@ -19,7 +19,7 @@ public class FloydWarshall {
             }
         }
 
-        for (Edge<Void, Weight> edge : edges) {
+        for (Edge<Weight> edge : edges) {
             int fromId = edge.getFrom ().getId ();
             int toId = edge.getTo ().getId ();
             dist[fromId][toId] = Math.min (edge.getData ().weight, dist[fromId][toId]);
@@ -46,17 +46,17 @@ public class FloydWarshall {
         return dist;
     }
 
-    public static void propagateNegativeCycle (int[][] dist, Graph<Void, Weight> graph, int index) {
+    public static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index) {
         dist[index][index] = Integer.MIN_VALUE;
-        for (Edge<Void, Weight> edge : graph.getVertices ().get (index).getEdges ()) {
+        for (Edge<Weight> edge : graph.getVertices ().get (index).getEdges ()) {
             propagateNegativeCycle (dist, graph, edge.getTo ().getId (), index);
         }
     }
 
-    public static void propagateNegativeCycle (int[][] dist, Graph<Void, Weight> graph, int index, int prevIndex) {
+    public static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index, int prevIndex) {
         if (dist[prevIndex][index] > Integer.MIN_VALUE) {
             dist[prevIndex][index] = Integer.MIN_VALUE;
-            for (Edge<Void, Weight> edge : graph.getVertices ().get (index).getEdges ()) {
+            for (Edge<Weight> edge : graph.getVertices ().get (index).getEdges ()) {
                 propagateNegativeCycle (dist, graph, edge.getTo ().getId (), index);
             }
         }

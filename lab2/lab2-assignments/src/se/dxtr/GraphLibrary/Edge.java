@@ -3,28 +3,28 @@ package se.dxtr.graphlibrary;
 /**
  * Created by dexter on 05/10/15.
  */
-public class Edge<V, E> {
-    private final Vertex<V, E> from;
-    private final Vertex<V, E> to;
+public class Edge<E> {
+    private final Vertex<E> from;
+    private final Vertex<E> to;
     private final E data;
 
-    public Edge (Vertex<V, E> from, Vertex<V, E> to, E data) {
+    public Edge (Vertex<E> from, Vertex<E> to, E data) {
         this.from = from;
         this.to = to;
         this.data = data;
     }
 
-    public Edge (Vertex<V, E> from, Vertex<V, E> to) {
+    public Edge (Vertex<E> from, Vertex<E> to) {
         this.from = from;
         this.to = to;
         this.data = null;
     }
 
-    public Vertex<V, E> getFrom () {
+    public Vertex<E> getFrom () {
         return from;
     }
 
-    public Vertex<V, E> getTo () {
+    public Vertex<E> getTo () {
         return to;
     }
 
@@ -35,8 +35,8 @@ public class Edge<V, E> {
     @Override
     public String toString () {
         return "Edge{" +
-                "from=" + from.getId () + ": " + from.getData () +
-                ", to=" + to.getId () + ": " + to.getData () +
+                "from=" + from.getId () +
+                ", to=" + to.getId () +
                 ", data=" + data +
                 '}';
     }
