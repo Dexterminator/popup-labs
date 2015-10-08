@@ -13,10 +13,8 @@ public class Dijkstra {
         distance[start.getId ()] = 0;
 
         TreeSet<Vertex<Weight>> queue = new TreeSet<> ((vertex1, vertex2) -> {
-            if (distance[vertex1.getId ()] == distance[vertex2.getId ()]) {
+            if (distance[vertex1.getId ()] == distance[vertex2.getId ()])
                 return vertex1.getId () - vertex2.getId ();
-            }
-
             if (distance[vertex1.getId ()] - distance[vertex2.getId ()] < 0)
                 return -1;
             return 1;
@@ -53,10 +51,8 @@ public class Dijkstra {
         distance[start.getId ()] = 0;
 
         TreeSet<Vertex<TimeTable>> queue = new TreeSet<> ((vertex1, vertex2) -> {
-            if (distance[vertex1.getId ()] == distance[vertex2.getId ()]) {
+            if (distance[vertex1.getId ()] == distance[vertex2.getId ()])
                 return vertex1.getId () - vertex2.getId ();
-            }
-
             if (distance[vertex1.getId ()] - distance[vertex2.getId ()] < 0)
                 return -1;
             return 1;
