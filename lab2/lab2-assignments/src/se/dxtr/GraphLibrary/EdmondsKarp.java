@@ -1,8 +1,6 @@
 package se.dxtr.graphlibrary;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -12,7 +10,7 @@ public class EdmondsKarp {
 
     @SuppressWarnings ("unchecked") // Needed since arrays do not allow generics, but we are safe as the method only handles FlowData graphs
     public static MaxFlowResult maxFlow (Graph<FlowData> graph, Vertex<FlowData> source, Vertex<FlowData> sink) {
-        int flow = 0;
+        long flow = 0;
         while (true) {
             Queue<Vertex<FlowData>> queue = new LinkedList<> ();
             queue.add (source);
@@ -47,18 +45,18 @@ public class EdmondsKarp {
             flow += deltaFlow;
         }
 
-        List<Edge<FlowData>> solution = graph.getEdges ().stream ()
+        Set<Edge<FlowData>> solution = graph.getEdges ().stream ()
                 .filter (edge -> edge.getData ().getFlow () > 0)
-                .collect (Collectors.toList ());
+                .collect (Collectors.toSet ());
 
-        return new MaxFlowResult (flow, solution);
+        return new MaxFlowResult (flow, new ArrayList<> (solution));
     }
 
     public static class MaxFlowResult {
-        public final int maxFlow;
+        public final long maxFlow;
         public final List<Edge<FlowData>> flowSolution;
 
-        public MaxFlowResult (int maxFlow, List<Edge<FlowData>> flowSolution) {
+        public MaxFlowResult (long maxFlow, List<Edge<FlowData>> flowSolution) {
             this.maxFlow = maxFlow;
             this.flowSolution = flowSolution;
         }

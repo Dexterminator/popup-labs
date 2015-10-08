@@ -20,8 +20,18 @@ public class Main {
             int v = io.getInt ();
             int c = io.getInt ();
             Edge<FlowData> edge = graph.addDirectedEdge (u, v, new FlowData (c));
-            edge.getData ().setReverseEdge (new Edge<> (edge.getTo (), edge.getFrom (), new FlowData (0)));
+            graph.getEdges ().stream ()
+                    .filter (e -> e.getFrom ().getId () == v && e.getTo ().getId () == u)
+                    .findFirst ()
+                    .ifPresent (e -> {
+                        edge.getData ().setReverseEdge (e);
+                        e.getData ().setReverseEdge (edge);
+                    });
         }
+
+        graph.getEdges ().stream ()
+                .filter (e -> e.getData ().getReverseEdge () == null)
+                .forEach (e -> e.getData ().setReverseEdge (new Edge<> (e.getTo (), e.getFrom (), new FlowData (0))));
 
         EdmondsKarp.MaxFlowResult maxFlowResult =
                 EdmondsKarp.maxFlow (graph, graph.getVertices ().get (s), graph.getVertices ().get (t));

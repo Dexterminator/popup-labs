@@ -1,5 +1,7 @@
 package se.dxtr.graphlibrary;
 
+import java.util.Objects;
+
 /**
  * Created by dexter on 05/10/15.
  */
@@ -30,6 +32,21 @@ public class Edge<E> {
 
     public E getData () {
         return data;
+    }
+
+    @Override
+    public boolean equals (Object o) {
+        if (this == o) return true;
+        if (o == null || getClass () != o.getClass ()) return false;
+        Edge<?> edge = (Edge<?>) o;
+        return Objects.equals (from.getId (), edge.from.getId ()) &&
+                Objects.equals (to.getId (), edge.to.getId ()) &&
+                Objects.equals (data, edge.data);
+    }
+
+    @Override
+    public int hashCode () {
+        return Objects.hash (from, to, data);
     }
 
     @Override
