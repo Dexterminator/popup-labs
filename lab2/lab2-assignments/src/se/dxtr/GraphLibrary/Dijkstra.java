@@ -44,14 +44,13 @@ public class Dijkstra {
             }
         }
 
-        return new DistanceResult(distance, parent);
+        return new DistanceResult (distance, parent);
     }
 
     public static DistanceResult shortestTimeTablePath (Graph<Void, TimeTable> graph, Vertex<Void, TimeTable> start) {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
-        long time = 0;
 
         TreeSet<Vertex<Void, TimeTable>> queue = new TreeSet<> ((vertex1, vertex2) -> {
             if (distance[vertex1.getId ()] == distance[vertex2.getId ()]) {
@@ -75,42 +74,26 @@ public class Dijkstra {
             Vertex<Void, TimeTable> current = queue.pollFirst ();
             for (Edge<Void, TimeTable> edge : current.getEdges ()) {
                 Vertex<Void, TimeTable> to = edge.getTo ();
-                //TODO
                 TimeTable timeTable = edge.getData ();
-                long timeDistance;
-                if (timeTable.interval == 0) {
-                    if (time == timeTable.t0)
-                        timeDistance = timeTable.traversalTime;
-                    else
-                        continue;
-                } else {
-                    long temp = timeTable.t0;
-                    while (temp < time) {
-                        temp += timeTable.interval;
+                if (timeTable.interval != 0 || (timeTable.interval == 0 && timeTable.t0 >= distance[current.getId ()])) {
+                    long alternativeDistance;
+                    if (timeTable.t0 >= distance[current.getId ()]) {
+                        long wait = timeTable.t0 - distance[current.getId ()];
+                        alternativeDistance = distance[current.getId ()] + timeTable.traversalTime + wait;
+                    } else {
+                        long mult = 1 + (distance[current.getId ()] - timeTable.t0 - 1) / timeTable.interval;
+                        alternativeDistance = timeTable.t0 + mult * timeTable.interval + timeTable.traversalTime;
                     }
-                    timeDistance = (long) timeTable.traversalTime + (temp - time);
-                }
-
-                long alternativeDistance = distance[current.getId ()] + timeDistance;
-                if (alternativeDistance < distance[to.getId ()]) {
-                    distance[to.getId ()] = alternativeDistance;
-                    parent[to.getId ()] = current;
-                    queue.remove (to);
-                    queue.add (to);
+                    if (alternativeDistance < distance[to.getId ()]) {
+                        distance[to.getId ()] = alternativeDistance;
+                        parent[to.getId ()] = current;
+                        queue.remove (to);
+                        queue.add (to);
+                    }
                 }
             }
         }
 
-        return new DistanceResult(distance, parent);
+        return new DistanceResult (distance, parent);
     }
-
-//    public static class DijkstraResult {
-//        public final Vertex[] parent;
-//        public final long[] distance;
-//
-//        public DijkstraResult (long[] distance, Vertex[] parent) {
-//            this.parent = parent;
-//            this.distance = distance;
-//        }
-//    }
 }
