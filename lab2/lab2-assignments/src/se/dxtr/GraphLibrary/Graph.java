@@ -31,13 +31,14 @@ public class Graph<E> {
         toVertex.addEdge (edge);
     }
 
-    public void addDirectedEdge (int from, int to, E data) {
+    public Edge<E> addDirectedEdge (int from, int to, E data) {
         Vertex<E> fromVertex = vertices.get (from);
         Vertex<E> toVertex = vertices.get (to);
         Edge<E> edge = new Edge<> (fromVertex, toVertex, data);
         edges.add (edge);
         fromVertex.addEdge (edge);
         toVertex.incrementInDegree ();
+        return edge;
     }
 
     public void addDirectedEdge (int from, int to) {

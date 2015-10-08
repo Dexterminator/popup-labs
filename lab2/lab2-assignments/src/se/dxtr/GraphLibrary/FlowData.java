@@ -6,6 +6,7 @@ package se.dxtr.graphlibrary;
 public class FlowData {
     private int capacity;
     private int flow;
+    private Edge<FlowData> reverseEdge;
 
     public FlowData (int capacity) {
         this.capacity = capacity;
@@ -30,6 +31,14 @@ public class FlowData {
 
     public void setFlow(int flow) {
         this.flow = flow;
+    }
+
+    public Edge<FlowData> getReverseEdge () {
+        return reverseEdge;
+    }
+
+    public void setReverseEdge (Edge<FlowData> reverseEdge) {
+        this.reverseEdge = reverseEdge;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package se.dxtr.maxflow;
 
-import se.dxtr.graphlibrary.FlowData;
-import se.dxtr.graphlibrary.Graph;
-import se.dxtr.graphlibrary.Kattio;
+import se.dxtr.graphlibrary.*;
 
 /**
  * Created by dexter on 08/10/15.
@@ -21,10 +19,16 @@ public class Main {
             int u = io.getInt ();
             int v = io.getInt ();
             int c = io.getInt ();
-            graph.addEdge (u, v, new FlowData (c));
+            Edge<FlowData> edge = graph.addDirectedEdge (u, v, new FlowData (c));
+            edge.getData ().setReverseEdge (new Edge<> (edge.getTo (), edge.getFrom (), new FlowData (0)));
         }
-        
-        io.println (graph);
+
+        EdmondsKarp.MaxFlowResult maxFlowResult =
+                EdmondsKarp.maxFlow (graph, graph.getVertices ().get (s), graph.getVertices ().get (t));
+
+        io.println (n + " " + maxFlowResult.maxFlow + " " + maxFlowResult.flowSolution.size ());
+        for (Edge<FlowData> edge : maxFlowResult.flowSolution)
+            io.println (edge.getFrom ().getId () + " " + edge.getTo ().getId () + " " + edge.getData ().getFlow ());
         io.close ();
     }
 }
