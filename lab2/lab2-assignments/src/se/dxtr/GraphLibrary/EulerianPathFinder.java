@@ -12,7 +12,6 @@ public class EulerianPathFinder {
         Deque<Edge<Void>> backTrack = new LinkedList<> ();
         Map<Integer, Deque<Edge<Void>>> unvisited = new HashMap<> ();
 
-
         Vertex<Void> start = null;
         int oddIn = 0;
         int oddOUt = 0;
@@ -60,6 +59,9 @@ public class EulerianPathFinder {
                 edges = unvisited.get (edge.getTo ().getId ());
             }
         }
+
+        if (backTrack.size () != graph.getEdges ().size ())
+            return null;
 
         List<Edge<Void>> path = new ArrayList<> ();
         while (!backTrack.isEmpty ()) {
