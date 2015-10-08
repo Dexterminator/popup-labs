@@ -13,8 +13,7 @@ public class EulerianPathFinder {
         Map<Integer, Deque<Edge<Void>>> unvisited = new HashMap<> ();
 
 
-        Vertex<Void> start;
-        boolean cyclic = true;
+        Vertex<Void> start = null;
         int oddIn = 0;
         int oddOUt = 0;
         for (Vertex<Void> vertex : graph.getVertices ()) {
@@ -22,20 +21,28 @@ public class EulerianPathFinder {
             int inOutDiff = vertex.inDegree () - vertex.degree ();
             int outInDiff = vertex.degree () - vertex.inDegree ();
 
-//            if (inOutDiff > 0) {
-//                if (inOutDiff == 1) {
-//                    cyclic = false;
-//                    oddIn++;
-//                } else {
-//                    return null;
-//                }
-//                if (oddIn > 1) {
-//
-//                }
-//            }
+            if (inOutDiff > 0) {
+                if (inOutDiff == 1) {
+                    oddIn++;
+                } else {
+                    return null;
+                }
+            } else if (outInDiff > 0) {
+                if (outInDiff == 1) {
+                    start = vertex;
+                    oddOUt++;
+                } else {
+                    return null;
+                }
+            }
         }
 
-         start = graph.getVertices ().get (0);
+        if (!(oddIn == 1 && oddOUt == 1 || oddIn == 0 && oddOUt == 0))
+            return null;
+
+        if (start == null)
+            start = graph.getVertices ().get (0);
+
         Deque<Edge<Void>> edges = unvisited.get (start.getId ());
         while (!edges.isEmpty ()) {
             Edge<Void> edge = edges.poll ();
