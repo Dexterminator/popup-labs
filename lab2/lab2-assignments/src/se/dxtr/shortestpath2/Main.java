@@ -38,7 +38,6 @@ public class Main {
                 int vertexId = io.getInt ();
                 if (distance[vertexId] != Integer.MAX_VALUE) {
                     io.println (distance[vertexId]);
-//                    printPath (vertexId, dijkstraResult.parent);
                 } else {
                     io.println ("Impossible");
                 }
