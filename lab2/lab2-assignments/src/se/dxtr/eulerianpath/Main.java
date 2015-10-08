@@ -19,15 +19,17 @@ public class Main {
             for (int i = 0; i < m; i++) {
                 int u = io.getInt ();
                 int v = io.getInt ();
-                graph.addEdge (u, v);
+                graph.addDirectedEdge (u, v);
             }
 
-            List<Vertex<Void>> eulerianPath = EulerianPathFinder.findEulerianPath (graph);
+            List<Edge<Void>> eulerianPath = EulerianPathFinder.findEulerianPath (graph);
             if (eulerianPath == null) {
                 io.println ("Impossible");
             } else {
-                for (Vertex<Void> vertex : eulerianPath)
-                    io.print (vertex.getId () + " ");
+                io.print (eulerianPath.get (0).getFrom ().getId () + " ");
+                for (Edge<Void> edge : eulerianPath) {
+                    io.print (edge.getTo ().getId () + " ");
+                }
                 io.println ();
             }
         }

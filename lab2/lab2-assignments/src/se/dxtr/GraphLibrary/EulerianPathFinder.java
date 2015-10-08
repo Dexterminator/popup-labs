@@ -1,53 +1,64 @@
 package se.dxtr.graphlibrary;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Created by dexter on 06/10/15.
  */
 public class EulerianPathFinder {
 
-    public static List<Vertex<Void>> findEulerianPath (Graph<Void> graph) {
-        List<Vertex<Void>> oddDegreeVertices = graph.getVertices ().stream ()
-                .filter (vertex -> vertex.degree () % 2 != 0)
-                .collect (Collectors.toList ());
+    public static List<Edge<Void>> findEulerianPath (Graph<Void> graph) {
+        Deque<Edge<Void>> forward = new LinkedList<> ();
+        Deque<Edge<Void>> backTrack = new LinkedList<> ();
+        Map<Integer, Deque<Edge<Void>>> unvisited = new HashMap<> ();
 
-        Vertex<Void> current;
-        if (oddDegreeVertices.size () == 0) {
-            current = graph.getVertices ().get (0);
-        } else if (oddDegreeVertices.size () == 2) {
-            current = oddDegreeVertices.get (0);
-        } else {
-            return null;
+
+        Vertex<Void> start;
+        boolean cyclic = true;
+        int oddIn = 0;
+        int oddOUt = 0;
+        for (Vertex<Void> vertex : graph.getVertices ()) {
+            unvisited.put (vertex.getId (), new LinkedList<> (vertex.getEdges ()));
+            int inOutDiff = vertex.inDegree () - vertex.degree ();
+            int outInDiff = vertex.degree () - vertex.inDegree ();
+
+//            if (inOutDiff > 0) {
+//                if (inOutDiff == 1) {
+//                    cyclic = false;
+//                    oddIn++;
+//                } else {
+//                    return null;
+//                }
+//                if (oddIn > 1) {
+//
+//                }
+//            }
         }
 
-        Deque<Vertex<Void>> stack = new LinkedList<> ();
-        List<Vertex<Void>> path = new ArrayList<> ();
-        int removed = 0;
-        boolean done = false;
-        while (!done) {
-            if (current.degree () == 0) {
-                path.add (current);
-                if (stack.isEmpty ())
-                    done = true;
-                else
-                    current = stack.pop ();
-            } else {
-                stack.push (current);
-                Vertex<Void> next = current.getNeighbor (0);
-                current.removeEdge (next);
-                next.removeEdge (current);
-                current = next;
-                removed++;
+         start = graph.getVertices ().get (0);
+        Deque<Edge<Void>> edges = unvisited.get (start.getId ());
+        while (!edges.isEmpty ()) {
+            Edge<Void> edge = edges.poll ();
+            forward.push (edge);
+            edges = unvisited.get (edge.getTo ().getId ());
+        }
+
+        while (!forward.isEmpty ()) {
+            Edge<Void> edge = forward.pop ();
+            backTrack.push (edge);
+            edges = unvisited.get (edge.getFrom ().getId ());
+            while (!edges.isEmpty ()) {
+                edge = edges.poll ();
+                forward.push (edge);
+                edges = unvisited.get (edge.getTo ().getId ());
             }
         }
 
-        if (removed != graph.getEdges ().size ())
-            return null;
+        List<Edge<Void>> path = new ArrayList<> ();
+        while (!backTrack.isEmpty ()) {
+            path.add (backTrack.pop ());
+        }
+
         return path;
     }
 }

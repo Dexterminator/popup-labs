@@ -8,10 +8,13 @@ import java.util.*;
 public class Vertex<E> {
     private final int id;
     private final List<Edge<E>> edges;
+    private int inDegree;
+
 
     public Vertex (int id) {
         this.id = id;
         edges = new ArrayList<> ();
+        inDegree = 0;
     }
 
     public int getId () {
@@ -50,6 +53,14 @@ public class Vertex<E> {
 
     public int degree () {
         return edges.size ();
+    }
+
+    public void incrementInDegree () {
+        inDegree++;
+    }
+
+    public int inDegree () {
+        return inDegree;
     }
 
     @Override

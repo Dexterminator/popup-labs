@@ -37,6 +37,11 @@ public class Graph<E> {
         Edge<E> edge = new Edge<> (fromVertex, toVertex, data);
         edges.add (edge);
         fromVertex.addEdge (edge);
+        toVertex.incrementInDegree ();
+    }
+
+    public void addDirectedEdge (int from, int to) {
+        addDirectedEdge (from, to, null);
     }
 
     public List<Edge<E>> getEdges () {
