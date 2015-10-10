@@ -11,14 +11,7 @@ public class Dijkstra {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
-
-        TreeSet<Vertex<Weight>> queue = new TreeSet<> ((vertex1, vertex2) -> {
-            if (distance[vertex1.getId ()] == distance[vertex2.getId ()])
-                return vertex1.getId () - vertex2.getId ();
-            if (distance[vertex1.getId ()] - distance[vertex2.getId ()] < 0)
-                return -1;
-            return 1;
-        });
+        NavigableSet<Vertex<Weight>> queue = getVerticesSortedByDistanceQueue (distance);
 
         for (Vertex<Weight> vertex : graph.getVertices ()) {
             if (vertex.getId () != start.getId ()) {
@@ -49,14 +42,7 @@ public class Dijkstra {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
         distance[start.getId ()] = 0;
-
-        TreeSet<Vertex<TimeTable>> queue = new TreeSet<> ((vertex1, vertex2) -> {
-            if (distance[vertex1.getId ()] == distance[vertex2.getId ()])
-                return vertex1.getId () - vertex2.getId ();
-            if (distance[vertex1.getId ()] - distance[vertex2.getId ()] < 0)
-                return -1;
-            return 1;
-        });
+        TreeSet<Vertex<TimeTable>> queue = getVerticesSortedByDistanceQueue (distance);
 
         for (Vertex<TimeTable> vertex : graph.getVertices ()) {
             if (vertex.getId () != start.getId ()) {
@@ -71,14 +57,17 @@ public class Dijkstra {
             for (Edge<TimeTable> edge : current.getEdges ()) {
                 Vertex<TimeTable> to = edge.getTo ();
                 TimeTable timeTable = edge.getData ();
-                if (timeTable.interval != 0 || (timeTable.interval == 0 && timeTable.t0 >= distance[current.getId ()])) {
+                int interval = timeTable.interval;
+                int t0 = timeTable.t0;
+                int traversalTime = timeTable.traversalTime;
+                if (interval != 0 || t0 >= distance[current.getId ()]) {
                     long alternativeDistance;
-                    if (timeTable.t0 >= distance[current.getId ()]) {
-                        long wait = timeTable.t0 - distance[current.getId ()];
-                        alternativeDistance = distance[current.getId ()] + timeTable.traversalTime + wait;
+                    if (t0 >= distance[current.getId ()]) {
+                        long wait = t0 - distance[current.getId ()];
+                        alternativeDistance = distance[current.getId ()] + traversalTime + wait;
                     } else {
-                        long mult = 1 + (distance[current.getId ()] - timeTable.t0 - 1) / timeTable.interval;
-                        alternativeDistance = timeTable.t0 + mult * timeTable.interval + timeTable.traversalTime;
+                        long mult = 1 + (distance[current.getId ()] - t0 - 1) / interval;
+                        alternativeDistance = t0 + mult * interval + traversalTime;
                     }
                     if (alternativeDistance < distance[to.getId ()]) {
                         distance[to.getId ()] = alternativeDistance;
@@ -91,5 +80,15 @@ public class Dijkstra {
         }
 
         return new DistanceResult (distance, parent);
+    }
+
+    private static <V> TreeSet<Vertex<V>> getVerticesSortedByDistanceQueue (long[] distance) {
+        return new TreeSet<> ((vertex1, vertex2) -> {
+            if (distance[vertex1.getId ()] == distance[vertex2.getId ()])
+                return vertex1.getId () - vertex2.getId ();
+            if (distance[vertex1.getId ()] - distance[vertex2.getId ()] < 0)
+                return -1;
+            return 1;
+        });
     }
 }

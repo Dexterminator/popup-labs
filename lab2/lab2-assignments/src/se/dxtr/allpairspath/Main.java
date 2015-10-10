@@ -5,9 +5,6 @@ import se.dxtr.graphlibrary.Graph;
 import se.dxtr.graphlibrary.Kattio;
 import se.dxtr.graphlibrary.Weight;
 
-/**
- * Created by Ludde on 15-10-07.
- */
 public class Main {
     static Kattio io;
 
@@ -26,23 +23,24 @@ public class Main {
                 int u = io.getInt ();
                 int v = io.getInt ();
                 int w = io.getInt ();
-                graph.addDirectedEdge(u, v, new Weight(w));
+                graph.addDirectedEdge (u, v, new Weight (w));
             }
-            int[][] distMatrix = FloydWarshall.shortestPath(graph);
+
+            int[][] distMatrix = FloydWarshall.shortestPath (graph);
             for (int i = 0; i < q; i++) {
-                int from = io.getInt();
-                int to = io.getInt();
+                int from = io.getInt ();
+                int to = io.getInt ();
 
                 int dist = distMatrix[from][to];
-                if(dist == Integer.MAX_VALUE)
-                    io.println("Impossible");
-                else if(dist == Integer.MIN_VALUE)
-                    io.println("-Infinity");
+                if (dist == Integer.MAX_VALUE)
+                    io.println ("Impossible");
+                else if (dist == Integer.MIN_VALUE)
+                    io.println ("-Infinity");
                 else
-                    io.println(dist);
+                    io.println (dist);
 
             }
-            io.println();
+            io.println ();
         }
 
         io.close ();

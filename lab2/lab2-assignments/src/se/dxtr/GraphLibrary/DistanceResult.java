@@ -11,15 +11,14 @@ public class DistanceResult {
     public final Vertex[] parent;
     public final long[] distance;
 
-    public DistanceResult(long[] distance, Vertex[] parent) {
+    public DistanceResult (long[] distance, Vertex[] parent) {
         this.parent = parent;
         this.distance = distance;
     }
 
-
     public List<Integer> getPath (int vertexId) {
         int currentId = vertexId;
-        List<Integer> ids = new ArrayList<>();
+        List<Integer> ids = new ArrayList<> ();
         while (true) {
             ids.add (currentId);
             Vertex vertex = parent[currentId];
@@ -27,7 +26,8 @@ public class DistanceResult {
                 break;
             currentId = vertex.getId ();
         }
-        Collections.reverse(ids);
+
+        Collections.reverse (ids);
         return ids;
     }
 }
