@@ -1,0 +1,1 @@
+./se/dxtr/allpairspath/submit.sh && ./se/dxtr/eulerianpath/submit.sh && ./se/dxtr/minspantree/submit.sh && ./se/dxtr/shortestpath1/submit.sh && ./se/dxtr/shortestpath2/submit.sh && ./se/dxtr/shortestpath3/submit.sh
