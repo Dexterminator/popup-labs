@@ -3,16 +3,28 @@ package se.dxtr.graphlibrary;
 import java.util.*;
 
 /**
- * Created by dexter on 06/10/15.
+ * Utility class with a method for finding an eulerian path in a graph.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class EulerianPathFinder {
 
+    /**
+     * Use Hierholzer's algorithm to find an eulerian path (a path that visits every edge exactly once) in a graph,
+     * if there is one.
+     *
+     * @param graph the graph in which to find an eulerian path
+     * @return a list of edges representing the eulerian path if there is one, null otherwise
+     */
     public static List<Edge<Void>> findEulerianPath (Graph<Void> graph) {
         Deque<Edge<Void>> forward = new LinkedList<> ();
         Deque<Edge<Void>> backTrack = new LinkedList<> ();
         Map<Integer, Deque<Edge<Void>>> unvisited = new HashMap<> ();
-
         Vertex<Void> start = null;
+
+        // Check degrees of all vertices as the graph must have at most one vertex has (out-degree) − (in-degree) = 1,
+        // and at most one vertex with (in-degree) − (out-degree) = 1 in order to have an eulerian path
         int inoutOnes = 0;
         int outInOnes = 0;
         for (Vertex<Void> vertex : graph.getVertices ()) {
@@ -42,6 +54,7 @@ public class EulerianPathFinder {
         if (start == null)
             start = graph.getVertices ().get (0);
 
+        // Follow a path from the start vertex, registering visited edges
         Deque<Edge<Void>> currentVertexEdges = unvisited.get (start.getId ());
         while (!currentVertexEdges.isEmpty ()) {
             Edge<Void> currentEdge = currentVertexEdges.poll ();
@@ -49,6 +62,8 @@ public class EulerianPathFinder {
             currentVertexEdges = unvisited.get (currentEdge.getTo ().getId ());
         }
 
+        // Keep following edges and adding subsequent edges to the forward path, while also registering edges
+        // that need to be backtracked
         while (!forward.isEmpty ()) {
             Edge<Void> edge = forward.pop ();
             backTrack.push (edge);

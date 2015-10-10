@@ -1,5 +1,11 @@
 package se.dxtr.graphlibrary;
 
+/**
+ * Container class for an edge weight value.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
+ */
 public class Weight {
     public final int weight;
 

@@ -1,7 +1,10 @@
 package se.dxtr.graphlibrary;
 
 /**
- * Created by dexter on 06/10/15.
+ * Container class for edge timetable values.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class TimeTable {
     public final int t0;

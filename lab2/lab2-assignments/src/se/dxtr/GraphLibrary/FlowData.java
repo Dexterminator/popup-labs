@@ -3,7 +3,7 @@ package se.dxtr.graphlibrary;
 import java.util.Objects;
 
 /**
- * Created by dexter on 08/10/15.
+ *
  */
 public class FlowData {
     private int capacity;
