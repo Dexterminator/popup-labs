@@ -2,9 +2,6 @@ package se.dxtr.graphlibrary;
 
 import java.util.Objects;
 
-/**
- *
- */
 public class FlowData {
     private int capacity;
     private int flow;
