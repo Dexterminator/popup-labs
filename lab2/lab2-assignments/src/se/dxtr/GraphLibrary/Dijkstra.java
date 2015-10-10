@@ -17,7 +17,8 @@ public class Dijkstra {
      *
      * @param graph  the graph in which to find the shortest path
      * @param source the vertex from which to find shortest paths
-     * @return a DistanceResult containing an array of the lengths of the shortest paths, and a parent array specifying the paths
+     * @return a DistanceResult containing an array of the lengths of the shortest paths, and a parent array specifying the paths.
+     * A distance value of Integer.MAX_VALUE indicates that the vertex is not reachable form the source.
      */
     public static DistanceResult shortestPath (Graph<Weight> graph, Vertex<Weight> source) {
         long[] distance = new long[graph.getVertices ().size ()];

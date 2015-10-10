@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Ludde on 15-10-07.
+ * Container class containing the shortest distances from a source node to all other nodes in a graph, as well as
+ * the paths corresponding to the distances.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class DistanceResult {
     public final Vertex[] parent;
