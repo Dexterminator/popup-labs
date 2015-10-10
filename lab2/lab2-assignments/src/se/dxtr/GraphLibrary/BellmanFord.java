@@ -1,7 +1,7 @@
 package se.dxtr.graphlibrary;
 
 /**
- * Utility class with methods for finding shortest paths from a single source where edge weights may be negative.
+ * Utility class with a method for finding shortest paths from a single source where edge weights may be negative.
  * <p>
  * Authors:
  * Dexter Gramfors, Ludvig Jansson
@@ -58,13 +58,12 @@ public class BellmanFord {
      * Propagate arbirarily short distances from the source, as all nodes reachable from a node reachable from the
      * source which has a negative cycle to itself have arbitrarily short paths from the source.
      */
-    public static void propagateNegativeCycle (Graph<Weight> graph, long[] distance, int vertexId) {
+    private static void propagateNegativeCycle (Graph<Weight> graph, long[] distance, int vertexId) {
         if (distance[vertexId] > NEGATIVE_INFINITY) {
             distance[vertexId] = NEGATIVE_INFINITY;
             for (Edge<Weight> edge : graph.getVertices ().get (vertexId).getEdges ()) {
                 propagateNegativeCycle (graph, distance, edge.getTo ().getId ());
             }
         }
-
     }
 }
