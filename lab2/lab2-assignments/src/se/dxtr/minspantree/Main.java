@@ -49,13 +49,11 @@ public class Main {
 
     public static void printTree (List<Edge<Weight>> tree) {
         long sum = 0;
-        for (Edge<Weight> edge : tree) {
+        for (Edge<Weight> edge : tree)
             sum += edge.getData ().weight;
-        }
 
         io.println (sum);
-        for (Edge<Weight> edge : tree) {
+        for (Edge<Weight> edge : tree)
             io.println (edge.getFrom ().getId () + " " + edge.getTo ().getId ());
-        }
     }
 }

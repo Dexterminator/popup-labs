@@ -14,10 +14,8 @@ public class BellmanFord {
         long[] distance = new long[graph.getVertices ().size ()];
         Vertex[] parent = new Vertex[graph.getVertices ().size ()];
 
-        for (Vertex<Weight> vertex : graph.getVertices ()) {
-            if (vertex.getId () != start.getId ())
-                distance[vertex.getId ()] = INFINITY;
-        }
+        for (Vertex<Weight> vertex : graph.getVertices ())
+            distance[vertex.getId ()] = INFINITY;
         distance[start.getId ()] = 0;
 
         List<Vertex<Weight>> vertexList = graph.getVertices ();
