@@ -62,20 +62,20 @@ public class FloydWarshall {
      * Propagate arbirarily short distances from a vertex, as all nodes reachable from a node reachable from the
      * vertex which has a negative cycle to itself have arbitrarily short paths from the vertex.
      */
-    private static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index) {
-        dist[index][index] = NEGATIVE_INFINITY;
+    private static void propagateNegativeCycle (int[][] distance, Graph<Weight> graph, int index) {
+        distance[index][index] = NEGATIVE_INFINITY;
         for (Edge<Weight> edge : graph.getVertices ().get (index).getEdges ())
-            propagateNegativeCycle (dist, graph, edge.getTo ().getId (), index);
+            propagateNegativeCycle (distance, graph, edge.getTo ().getId (), index);
     }
 
     /**
      * Helper for recursively propagating a negative cycle.
      */
-    private static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index, int prevIndex) {
-        if (dist[prevIndex][index] > NEGATIVE_INFINITY) {
-            dist[prevIndex][index] = NEGATIVE_INFINITY;
+    private static void propagateNegativeCycle (int[][] distance, Graph<Weight> graph, int index, int prevIndex) {
+        if (distance[prevIndex][index] > NEGATIVE_INFINITY) {
+            distance[prevIndex][index] = NEGATIVE_INFINITY;
             for (Edge<Weight> edge : graph.getVertices ().get (index).getEdges ())
-                propagateNegativeCycle (dist, graph, edge.getTo ().getId (), index);
+                propagateNegativeCycle (distance, graph, edge.getTo ().getId (), index);
         }
     }
 }
