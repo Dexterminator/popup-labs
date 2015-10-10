@@ -15,7 +15,7 @@ public class Kruskal {
     /**
      * Finds the minimum spanning tree of a graph using Kurskal's algorithm
      * @param graph the graph in which to find the minimum spanning tree
-     * @return a list of edges representing the minimum spanning tree
+     * @return a list of edges representing the minimum spanning tree if one exists, null otherwise
      */
     static public List<Edge<Weight>> kruskal (Graph<Weight> graph) {
         DisjointSets sets = new DisjointSets (graph.size ());
@@ -43,7 +43,7 @@ public class Kruskal {
     /**
      * The tree is a spanning tree if it includes all vertices in the graph, i.e  the number of edges is |vertices| - 1.
      */
-    public static boolean isSpanningTree (List<Edge<Weight>> tree, Graph<Weight> graph) {
+    private static boolean isSpanningTree (List<Edge<Weight>> tree, Graph<Weight> graph) {
         return tree.size () == graph.size () - 1;
     }
 
