@@ -7,6 +7,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Solve minspantree kattis problem.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
+ */
 public class Main {
 
     static Kattio io = new Kattio (System.in, System.out);

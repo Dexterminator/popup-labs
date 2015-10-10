@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dexter on 06/10/15.
+ * Solve shortestpath1 kattis problem.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
-
 public class Main {
     static Kattio io = new Kattio (System.in, System.out);
 

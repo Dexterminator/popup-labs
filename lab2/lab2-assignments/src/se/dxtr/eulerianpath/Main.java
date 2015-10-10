@@ -4,6 +4,12 @@ import se.dxtr.graphlibrary.*;
 
 import java.util.List;
 
+/**
+ * Solve eulerianpath kattis problem.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
+ */
 public class Main {
 
     static Kattio io = new Kattio (System.in, System.out);

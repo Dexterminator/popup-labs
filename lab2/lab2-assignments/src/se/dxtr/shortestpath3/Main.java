@@ -3,7 +3,10 @@ package se.dxtr.shortestpath3;
 import se.dxtr.graphlibrary.*;
 
 /**
- * Created by Ludde on 15-10-07.
+ * Solve shortestpath3 kattis problem.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class Main {
     static Kattio io;

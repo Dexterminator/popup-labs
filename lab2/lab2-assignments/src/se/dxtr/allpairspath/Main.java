@@ -5,6 +5,12 @@ import se.dxtr.graphlibrary.Graph;
 import se.dxtr.graphlibrary.Kattio;
 import se.dxtr.graphlibrary.Weight;
 
+/**
+ * Solve allpairspath kattis problem.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
+ */
 public class Main {
     static Kattio io;
 

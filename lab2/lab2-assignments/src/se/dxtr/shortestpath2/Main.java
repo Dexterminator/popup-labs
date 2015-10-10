@@ -3,9 +3,11 @@ package se.dxtr.shortestpath2;
 import se.dxtr.graphlibrary.*;
 
 /**
- * Created by dexter on 06/10/15.
+ * Solve shortestpath2 kattis problem.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
-
 public class Main {
     static Kattio io = new Kattio (System.in, System.out);
 
