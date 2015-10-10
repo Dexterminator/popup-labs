@@ -3,7 +3,10 @@ package se.dxtr.graphlibrary;
 import java.util.*;
 
 /**
- * Created by dexter on 05/10/15.
+ * Generic vertex class representing a vertex in a graph with edges associated with some data.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class Vertex<E> {
     private final int id;
@@ -11,54 +14,65 @@ public class Vertex<E> {
     private int inDegree;
 
 
+    /**
+     * Create a vertex with an id.
+     *
+     * @param id the unique id of the vertex within the graph
+     */
     public Vertex (int id) {
         this.id = id;
         edges = new ArrayList<> ();
         inDegree = 0;
     }
 
+    /**
+     * Returns the unique id of the vertex.
+     *
+     * @return the unique id of the vertex
+     */
     public int getId () {
         return id;
     }
 
+    /**
+     * Returns an unmodifiable view of all edges from the vertex.
+     *
+     * @return an unmodifiable view of all edges from the vertex
+     */
     public List<Edge<E>> getEdges () {
         return Collections.unmodifiableList (edges);
     }
 
-    public Vertex<E> getNeighbor (int index) {
-        return getOther (edges.get (index));
-    }
-
-    private Vertex<E> getOther (Edge<E> edge) {
-        if (edge.getTo ().getId () == id)
-            return edge.getFrom ();
-        return edge.getTo ();
-    }
-
-    public void removeEdge (Vertex other) {
-        Iterator<Edge<E>> i = edges.iterator ();
-        boolean removed = false;
-        while (i.hasNext () && !removed) {
-            Edge<E> edge = i.next ();
-            if (edge.getFrom ().getId () == other.getId () || edge.getTo ().getId () == other.getId ()) {
-                i.remove ();
-                removed = true;
-            }
-        }
-    }
-
+    /**
+     * Adds the specified edge to the list of edges that originate in the vertex.
+     *
+     * @param edge the edge to add to the list of edges that originate in the vertex
+     */
     public void addEdge (Edge<E> edge) {
         edges.add (edge);
     }
 
+    /**
+     * Returns the number of edges from this vertex to other vertices i.e its degree.
+     *
+     * @return the number of edges from this vertex to other vertices i.e its degree.
+     */
     public int degree () {
         return edges.size ();
     }
 
+    /**
+     * Increment the number of vertices with edges to this vertex.
+     */
     public void incrementInDegree () {
         inDegree++;
     }
 
+    /**
+     * Returns the number of edges from other vertices to this vertex.
+     *
+     * @return the number of edges from other vertices to this vertex
+     */
     public int inDegree () {
         return inDegree;
     }
