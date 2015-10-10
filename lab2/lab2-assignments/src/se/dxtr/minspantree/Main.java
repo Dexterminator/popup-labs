@@ -2,11 +2,20 @@ package se.dxtr.minspantree;
 
 import se.dxtr.graphlibrary.*;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 public class Main {
 
     static Kattio io = new Kattio (System.in, System.out);
+    static Comparator<Edge> lexicoGraphicalOrder = (edge1, edge2) -> {
+        if (edge1.getFrom ().getId () == edge2.getFrom ().getId ())
+            return edge1.getTo ().getId () - edge2.getTo ().getId ();
+        return edge1.getFrom ().getId () - edge2.getFrom ().getId ();
+    };
+
     public static void main (String[] args) {
         while (io.hasMoreTokens ()) {
             int n = io.getInt ();
@@ -27,8 +36,9 @@ public class Main {
                 }
             }
 
-            Set<Edge<Weight>> tree = Kruskal.kruskal (graph);
+            List<Edge<Weight>> tree = Kruskal.kruskal (graph);
             if (tree != null) {
+                Collections.sort (tree, lexicoGraphicalOrder);
                 printTree (tree);
             } else {
                 io.println ("Impossible");
@@ -37,7 +47,7 @@ public class Main {
         io.close ();
     }
 
-    public static void printTree (Set<Edge<Weight>> tree) {
+    public static void printTree (List<Edge<Weight>> tree) {
         long sum = 0;
         for (Edge<Weight> edge : tree) {
             sum += edge.getData ().weight;

@@ -46,14 +46,14 @@ public class FloydWarshall {
         return dist;
     }
 
-    public static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index) {
+    private static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index) {
         dist[index][index] = Integer.MIN_VALUE;
         for (Edge<Weight> edge : graph.getVertices ().get (index).getEdges ()) {
             propagateNegativeCycle (dist, graph, edge.getTo ().getId (), index);
         }
     }
 
-    public static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index, int prevIndex) {
+    private static void propagateNegativeCycle (int[][] dist, Graph<Weight> graph, int index, int prevIndex) {
         if (dist[prevIndex][index] > Integer.MIN_VALUE) {
             dist[prevIndex][index] = Integer.MIN_VALUE;
             for (Edge<Weight> edge : graph.getVertices ().get (index).getEdges ()) {

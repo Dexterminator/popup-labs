@@ -15,15 +15,15 @@ public class FlowData {
         flow = 0;
     }
 
-    public int getCapacity() {
+    public int getCapacity () {
         return capacity;
     }
 
-    public int getFlow() {
+    public int getFlow () {
         return flow;
     }
 
-    public void addFlow(int flow) {
+    public void addFlow (int flow) {
         this.flow += flow;
     }
 

@@ -7,6 +7,10 @@ public class Weight {
         this.weight = weight;
     }
 
+    public int getWeight () {
+        return weight;
+    }
+
     @Override
     public String toString () {
         return "Weight{" +

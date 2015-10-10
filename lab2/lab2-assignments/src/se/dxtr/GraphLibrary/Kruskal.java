@@ -9,18 +9,12 @@ public class Kruskal {
     static Comparator<Edge<Weight>> weightEdgeComparator =
             (edge1, edge2) -> edge1.getData ().weight - edge2.getData ().weight;
 
-    static Comparator<Edge> lexicoGraphicalOrder = (edge1, edge2) -> {
-        if (edge1.getFrom ().getId () == edge2.getFrom ().getId ())
-            return edge1.getTo ().getId () - edge2.getTo ().getId ();
-        return edge1.getFrom ().getId () - edge2.getFrom ().getId ();
-    };
-
-    static public Set<Edge<Weight>> kruskal (Graph<Weight> graph) {
+    static public List<Edge<Weight>> kruskal (Graph<Weight> graph) {
         DisjointSets sets = new DisjointSets (graph.size ());
         List<Edge<Weight>> edges = new ArrayList<> (graph.getEdges ());
         edges.sort (weightEdgeComparator);
-        SortedSet<Edge<Weight>> tree = new TreeSet<> (lexicoGraphicalOrder);
 
+        List<Edge<Weight>> tree = new ArrayList<> ();
         for (Edge<Weight> edge : edges) {
             int a = edge.getFrom ().getId ();
             int b = edge.getTo ().getId ();
@@ -35,7 +29,7 @@ public class Kruskal {
         return null;
     }
 
-    public static boolean isSpanningTree (SortedSet<Edge<Weight>> tree, Graph<Weight> graph) {
+    public static boolean isSpanningTree (List<Edge<Weight>> tree, Graph<Weight> graph) {
         return tree.size () == graph.size () - 1;
     }
 

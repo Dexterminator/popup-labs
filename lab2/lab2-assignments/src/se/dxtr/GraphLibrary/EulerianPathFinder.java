@@ -13,8 +13,8 @@ public class EulerianPathFinder {
         Map<Integer, Deque<Edge<Void>>> unvisited = new HashMap<> ();
 
         Vertex<Void> start = null;
-        int oddIn = 0;
-        int oddOUt = 0;
+        int inoutOnes = 0;
+        int outInOnes = 0;
         for (Vertex<Void> vertex : graph.getVertices ()) {
             unvisited.put (vertex.getId (), new LinkedList<> (vertex.getEdges ()));
             int inOutDiff = vertex.inDegree () - vertex.degree ();
@@ -22,41 +22,41 @@ public class EulerianPathFinder {
 
             if (inOutDiff > 0) {
                 if (inOutDiff == 1) {
-                    oddIn++;
+                    inoutOnes++;
                 } else {
                     return null;
                 }
             } else if (outInDiff > 0) {
                 if (outInDiff == 1) {
                     start = vertex;
-                    oddOUt++;
+                    outInOnes++;
                 } else {
                     return null;
                 }
             }
         }
 
-        if (!(oddIn == 1 && oddOUt == 1 || oddIn == 0 && oddOUt == 0))
+        if (!(inoutOnes == 1 && outInOnes == 1 || inoutOnes == 0 && outInOnes == 0))
             return null;
 
         if (start == null)
             start = graph.getVertices ().get (0);
 
-        Deque<Edge<Void>> edges = unvisited.get (start.getId ());
-        while (!edges.isEmpty ()) {
-            Edge<Void> edge = edges.poll ();
-            forward.push (edge);
-            edges = unvisited.get (edge.getTo ().getId ());
+        Deque<Edge<Void>> currentVertexEdges = unvisited.get (start.getId ());
+        while (!currentVertexEdges.isEmpty ()) {
+            Edge<Void> currentEdge = currentVertexEdges.poll ();
+            forward.push (currentEdge);
+            currentVertexEdges = unvisited.get (currentEdge.getTo ().getId ());
         }
 
         while (!forward.isEmpty ()) {
             Edge<Void> edge = forward.pop ();
             backTrack.push (edge);
-            edges = unvisited.get (edge.getFrom ().getId ());
-            while (!edges.isEmpty ()) {
-                edge = edges.poll ();
+            currentVertexEdges = unvisited.get (edge.getFrom ().getId ());
+            while (!currentVertexEdges.isEmpty ()) {
+                edge = currentVertexEdges.poll ();
                 forward.push (edge);
-                edges = unvisited.get (edge.getTo ().getId ());
+                currentVertexEdges = unvisited.get (edge.getTo ().getId ());
             }
         }
 
@@ -64,9 +64,8 @@ public class EulerianPathFinder {
             return null;
 
         List<Edge<Void>> path = new ArrayList<> ();
-        while (!backTrack.isEmpty ()) {
+        while (!backTrack.isEmpty ())
             path.add (backTrack.pop ());
-        }
 
         return path;
     }
