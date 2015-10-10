@@ -2,7 +2,7 @@ package se.dxtr.graphlibrary;
 
 /**
  * Utility class to implement the Disjoint Sets data structure
- *
+ * <p>
  * Authors: Ludvig Jansson and Dexter Gramfors
  */
 public class DisjointSets {
@@ -11,6 +11,7 @@ public class DisjointSets {
 
     /**
      * Public constructor for the Disjoint Sets data structure
+     *
      * @param n size of the set
      */
     public DisjointSets (int n) {
@@ -26,6 +27,7 @@ public class DisjointSets {
      * Performs a union of the sets containing the elements a and b.
      * Returns immediatelly if a and b already are in the same set.
      * Otherwise, attaches the smallest (by height) set to the largest.
+     *
      * @param a An element
      * @param b An element
      */
@@ -36,7 +38,7 @@ public class DisjointSets {
             return;
         if (heights[aRoot] < heights[bRoot]) {
             ids[aRoot] = bRoot;
-        } else if (heights[aRoot] > heights[bRoot]){
+        } else if (heights[aRoot] > heights[bRoot]) {
             ids[bRoot] = aRoot;
         } else { // heights equal, attaching the tree will increase height by 1
             ids[aRoot] = bRoot;
@@ -46,6 +48,7 @@ public class DisjointSets {
 
     /**
      * Decides if a and b are in the same set by finding their roots.
+     *
      * @param a An element
      * @param b An element
      * @return True iff they are in the same element, False otherwise

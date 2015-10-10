@@ -40,6 +40,7 @@ public class Edge<E> {
 
     /**
      * Returns the first vertex in the edge.
+     *
      * @return the first vertex in the edge
      */
     public Vertex<E> getFrom () {
@@ -48,6 +49,7 @@ public class Edge<E> {
 
     /**
      * Returns the second vertex in the edge.
+     *
      * @return the second vertex in the edge
      */
     public Vertex<E> getTo () {
@@ -56,6 +58,7 @@ public class Edge<E> {
 
     /**
      * Returns the data associated with the edge or null if no data is associated with this edge.
+     *
      * @return the data associated with the edge
      */
     public E getData () {

@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
  */
 public class EdmondsKarp {
 
-    @SuppressWarnings ("unchecked") // Needed since arrays do not allow generics, but we are safe as the method only handles FlowData graphs
+    @SuppressWarnings("unchecked")
+    // Needed since arrays do not allow generics, but we are safe as the method only handles FlowData graphs
     public static MaxFlowResult maxFlow (Graph<FlowData> graph, Vertex<FlowData> source, Vertex<FlowData> sink) {
         long flow = 0;
         while (true) {
