@@ -13,6 +13,8 @@ public class Main {
             String pattern = io.getWord ();
             String text = io.getWord ();
             List<Integer> matchIndices = KnuthMorrisPratt.findMatches (pattern, text);
+            matchIndices.forEach (i -> io.print (i + " "));
+            io.println ();
         }
         io.close ();
     }
