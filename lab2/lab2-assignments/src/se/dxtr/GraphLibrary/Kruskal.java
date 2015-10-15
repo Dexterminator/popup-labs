@@ -13,7 +13,7 @@ public class Kruskal {
             (edge1, edge2) -> edge1.getData ().weight - edge2.getData ().weight;
 
     /**
-     * Finds the minimum spanning tree of a graph, if ther is one, using Kurskal's algorithm.
+     * Finds the minimum spanning tree of a graph, if there is one, using Kurskal's algorithm.
      *
      * @param graph the graph in which to find the minimum spanning tree
      * @return a list of edges representing the minimum spanning tree if one exists, null otherwise

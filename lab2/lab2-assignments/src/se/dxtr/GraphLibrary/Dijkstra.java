@@ -129,6 +129,7 @@ public class Dijkstra {
 
     /**
      * Get a queue with vertices sorted by their distance from a source node.
+     * Vertices are sorted by ID if their distance is equal.
      */
     private static <V> NavigableSet<Vertex<V>> getVerticesSortedByDistanceQueue (long[] distance) {
         return new TreeSet<> ((vertex1, vertex2) -> {

@@ -59,7 +59,7 @@ public class FloydWarshall {
     }
 
     /**
-     * Propagate arbirarily short distances from a vertex, as all nodes reachable from a node reachable from the
+     * Propagate arbitrarily short distances from a vertex, as all nodes reachable from a node reachable from the
      * vertex which has a negative cycle to itself have arbitrarily short paths from the vertex.
      */
     private static void propagateNegativeCycle (int[][] distance, Graph<Weight> graph, int index) {

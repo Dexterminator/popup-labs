@@ -17,7 +17,7 @@ public class Edge<E> {
      * Create an edge between two vertices.
      *
      * @param from the first vertex in the edge
-     * @param to   the second vertice in the edge
+     * @param to   the second vertex in the edge
      * @param data the data associated with the edge
      */
     public Edge (Vertex<E> from, Vertex<E> to, E data) {
@@ -30,7 +30,7 @@ public class Edge<E> {
      * Create an edge between two vertices.
      *
      * @param from the first vertex in the edge
-     * @param to   the second vertice in the edge
+     * @param to   the second vertex in the edge
      */
     public Edge (Vertex<E> from, Vertex<E> to) {
         this.from = from;

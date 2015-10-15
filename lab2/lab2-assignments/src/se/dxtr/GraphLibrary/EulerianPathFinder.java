@@ -24,7 +24,7 @@ public class EulerianPathFinder {
         Vertex<Void> start = null;
 
         // Check degrees of all vertices as the graph must have at most one vertex has (out-degree) − (in-degree) = 1,
-        // and at most one vertex with (in-degree) − (out-degree) = 1 in order to have an eulerian path
+        // and at most one vertex with (in-degree) − (out-degree) = 1 in order to have an eulerian path.
         int inoutOnes = 0;
         int outInOnes = 0;
         for (Vertex<Void> vertex : graph.getVertices ()) {
@@ -66,7 +66,7 @@ public class EulerianPathFinder {
         // that need to be backtracked
         while (!forward.isEmpty ()) {
             Edge<Void> edge = forward.pop ();
-            backTrack.push (edge);
+            backTrack.push (edge); // This edge is part of the path
             currentVertexEdges = unvisited.get (edge.getFrom ().getId ());
             while (!currentVertexEdges.isEmpty ()) {
                 edge = currentVertexEdges.poll ();
@@ -75,9 +75,11 @@ public class EulerianPathFinder {
             }
         }
 
+        // By definition, an eulerian path/circuit must contain all edges in the Graph
         if (backTrack.size () != graph.getEdges ().size ())
             return null;
 
+        // Backtrack will at this point contain the path travelled.
         List<Edge<Void>> path = new ArrayList<> ();
         while (!backTrack.isEmpty ())
             path.add (backTrack.pop ());

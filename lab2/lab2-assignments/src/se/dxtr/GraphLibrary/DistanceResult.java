@@ -20,6 +20,9 @@ public class DistanceResult {
         this.distance = distance;
     }
 
+    /**
+     * Returns the shortest path to a specific vertex.
+     */
     public List<Integer> getPath (int vertexId) {
         int currentId = vertexId;
         List<Integer> ids = new ArrayList<> ();
