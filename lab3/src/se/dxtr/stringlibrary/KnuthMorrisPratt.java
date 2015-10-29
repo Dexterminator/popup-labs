@@ -6,11 +6,23 @@ import java.util.List;
 public class KnuthMorrisPratt {
     public static List<Integer> findMatches (String pattern, String text) {
         int[] prefixTable = calculatePrefixTable(pattern);
-        return kmpSearch(pattern, text, prefixTable);
+        List<Integer> matches = new ArrayList<>();
+        int matchStart = 0;
+        while(matchStart + pattern.length() < text.length()){
+            int match = kmpSearch(pattern, text, prefixTable, matchStart);
+            if (match < 0) {
+                break;
+            } else {
+                matches.add(match);
+                matchStart = match + 1;
+            }
+        }
+//        return kmpSearch(pattern, text, prefixTable);
+        return matches;
     }
 
     private static int[] calculatePrefixTable (String pattern) {
-        char[] chars = pattern.toCharArray ();
+        char[] chars = pattern.toCharArray();
         if(chars.length == 1){
             return new int[]{-1};
         }
@@ -35,9 +47,9 @@ public class KnuthMorrisPratt {
         return prefixTable;
     }
 
-    private static List<Integer> kmpSearch(String pattern, String text, int[] prefixTable){
+    private static int kmpSearch(String pattern, String text, int[] prefixTable, int startIndex){
         List<Integer> indices = new ArrayList<>();
-        int matchStart = 0;
+        int matchStart = startIndex;
         int currIndex = 0;
         char[] patternChars = pattern.toCharArray();
         char[] textChars = text.toCharArray();
@@ -45,9 +57,10 @@ public class KnuthMorrisPratt {
         while(matchStart + currIndex < textChars.length){
             if(patternChars[currIndex] == textChars[matchStart+currIndex]){
                 if(currIndex == patternChars.length-1) {
-                    indices.add(matchStart);
-                    matchStart++;
-                    currIndex = 0;
+                    return matchStart;
+//                    indices.add(matchStart);
+//                    matchStart++;
+//                    currIndex = 0;
                 } else {
                     currIndex++;
                 }
@@ -61,6 +74,7 @@ public class KnuthMorrisPratt {
                 }
             }
         }
-        return indices;
+//        return indices;
+        return -1;
     }
 }
