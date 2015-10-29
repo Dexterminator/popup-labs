@@ -41,22 +41,15 @@ public class Dijkstra {
                 Vertex<Weight> to = edge.getTo ();
                 long alternativeDistance = distance[current.getId ()] + edge.getData ().weight;
                 if (alternativeDistance < distance[to.getId ()]) {
+                    queue.remove (to);
                     distance[to.getId ()] = alternativeDistance;
                     parent[to.getId ()] = current;
-                    updatePriority (queue, to);
+                    queue.add (to);
                 }
             }
         }
 
         return new DistanceResult (distance, parent);
-    }
-
-    /**
-     * Updates the priority of a vertex in the queue.
-     */
-    private static void updatePriority (NavigableSet<Vertex<Weight>> queue, Vertex<Weight> vertex) {
-        queue.remove (vertex);
-        queue.add (vertex);
     }
 
     /**
@@ -95,9 +88,9 @@ public class Dijkstra {
                     long alternativeDistance =
                             calculateAlternativeDistance (distance[current.getId ()], interval, t0, traversalTime);
                     if (alternativeDistance < distance[to.getId ()]) {
+                        queue.remove (to);
                         distance[to.getId ()] = alternativeDistance;
                         parent[to.getId ()] = current;
-                        queue.remove (to);
                         queue.add (to);
                     }
                 }
