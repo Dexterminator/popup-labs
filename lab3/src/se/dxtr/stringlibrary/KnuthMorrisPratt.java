@@ -1,13 +1,14 @@
 package se.dxtr.stringlibrary;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class KnuthMorrisPratt {
-
     public static List<Integer> findMatches (String pattern, String text) {
-        System.err.println (Arrays.toString (calculatePrefixTable ("ABCDABD")));
-        return null;
+//        System.err.println (Arrays.toString (calculatePrefixTable ("ABCDABD")));
+        int[] prefixTable = calculatePrefixTable(pattern);
+        return kmpSearch(pattern, text, prefixTable);
     }
 
     private static int[] calculatePrefixTable (String pattern) {
@@ -31,5 +32,29 @@ public class KnuthMorrisPratt {
             }
         }
         return prefixTable;
+    }
+
+    private static List<Integer> kmpSearch(String pattern, String text, int[] prefixTable){
+        List<Integer> indices = new ArrayList<>();
+        int matchStart = 0;
+        int currIndex = 0;
+        char[] patternChars = pattern.toCharArray();
+        char[] textChars = text.toCharArray();
+        while(matchStart + currIndex < textChars.length){
+            if(patternChars[currIndex] == textChars[matchStart+currIndex]){
+                if(currIndex == patternChars.length)
+                    indices.add(matchStart);
+                currIndex++;
+            } else {
+                if(prefixTable[currIndex] > -1) {
+                    matchStart += currIndex - prefixTable[currIndex];
+                    currIndex++;
+                } else {
+                    currIndex = 0;
+                    matchStart++;
+                }
+            }
+        }
+        return indices;
     }
 }
