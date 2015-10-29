@@ -13,6 +13,9 @@ public class KnuthMorrisPratt {
 
     private static int[] calculatePrefixTable (String pattern) {
         char[] chars = pattern.toCharArray ();
+        if(chars.length == 1){
+            return new int[]{-1};
+        }
         int pos = 2;
         int currCandidateIndex = 0;
         int[] prefixTable = new int[pattern.length ()];
@@ -40,15 +43,20 @@ public class KnuthMorrisPratt {
         int currIndex = 0;
         char[] patternChars = pattern.toCharArray();
         char[] textChars = text.toCharArray();
+
         while(matchStart + currIndex < textChars.length){
             if(patternChars[currIndex] == textChars[matchStart+currIndex]){
-                if(currIndex == patternChars.length)
+                if(currIndex == patternChars.length-1) {
                     indices.add(matchStart);
-                currIndex++;
+                    matchStart++;
+                    currIndex = 0;
+                } else {
+                    currIndex++;
+                }
             } else {
                 if(prefixTable[currIndex] > -1) {
                     matchStart += currIndex - prefixTable[currIndex];
-                    currIndex++;
+                    currIndex = prefixTable[currIndex];
                 } else {
                     currIndex = 0;
                     matchStart++;
