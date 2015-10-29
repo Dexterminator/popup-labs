@@ -1,12 +1,10 @@
 package se.dxtr.stringlibrary;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class KnuthMorrisPratt {
     public static List<Integer> findMatches (String pattern, String text) {
-//        System.err.println (Arrays.toString (calculatePrefixTable ("ABCDABD")));
         int[] prefixTable = calculatePrefixTable(pattern);
         return kmpSearch(pattern, text, prefixTable);
     }
