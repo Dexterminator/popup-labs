@@ -6,29 +6,38 @@ import java.util.List;
 public class KnuthMorrisPratt {
     public static List<Integer> findMatches (String pattern, String text) {
         int[] prefixTable = calculatePrefixTable(pattern);
-        List<Integer> matches = new ArrayList<>();
-        int matchStart = 0;
-        while(matchStart + pattern.length() < text.length()){
-            int match = kmpSearch(pattern, text, prefixTable, matchStart);
-            if (match < 0) {
-                break;
-            } else {
-                matches.add(match);
-                matchStart = match + 1;
-            }
-        }
-//        return kmpSearch(pattern, text, prefixTable);
-        return matches;
+        return kmpSearch(pattern, text, prefixTable);
     }
 
     private static int[] calculatePrefixTable (String pattern) {
         char[] chars = pattern.toCharArray();
+        int[] prefixTable = new int[pattern.length ()];
+        int currMax = 0;
+        prefixTable[0]=0;
+        int i = 1;
+        while(i < pattern.length()){
+            if(chars[i] == chars[currMax]){
+                currMax++;
+                prefixTable[i] = currMax;
+                i++;
+            } else {
+                if(currMax != 0){
+                    currMax = prefixTable[currMax-1];
+                } else {
+                    prefixTable[i] = 0;
+                    i++;
+                }
+            }
+        }
+
+
+
+        /*
         if(chars.length == 1){
             return new int[]{-1};
         }
         int pos = 2;
         int currCandidateIndex = 0;
-        int[] prefixTable = new int[pattern.length ()];
         prefixTable[0] = -1;
         prefixTable[1] = 0;
 
@@ -44,37 +53,51 @@ public class KnuthMorrisPratt {
                 pos++;
             }
         }
+        */
         return prefixTable;
     }
 
-    private static int kmpSearch(String pattern, String text, int[] prefixTable, int startIndex){
+    private static List<Integer> kmpSearch(String pattern, String text, int[] prefixTable){
         List<Integer> indices = new ArrayList<>();
-        int matchStart = startIndex;
-        int currIndex = 0;
+        int patternPos = 0;
+        int textPos = 0;
         char[] patternChars = pattern.toCharArray();
         char[] textChars = text.toCharArray();
-
-        while(matchStart + currIndex < textChars.length){
+        while(textPos < textChars.length){
+            if(textChars[textPos] == patternChars[patternPos]){
+                patternPos++;
+                textPos++;
+            }
+            if(patternPos == patternChars.length){
+                indices.add(textPos-patternPos);
+                patternPos = prefixTable[patternPos-1];
+            } else if(textPos < textChars.length && textChars[textPos] != patternChars[patternPos]){
+                if(patternPos != 0){
+                    patternPos = prefixTable[patternPos-1];
+                } else {
+                    textPos++;
+                }
+            }
+            /*
             if(patternChars[currIndex] == textChars[matchStart+currIndex]){
                 if(currIndex == patternChars.length-1) {
-                    return matchStart;
-//                    indices.add(matchStart);
-//                    matchStart++;
-//                    currIndex = 0;
+                    indices.add(matchStart);
+                    matchStart++;
+                    currIndex = 0;
                 } else {
                     currIndex++;
                 }
             } else {
+                matchStart += currIndex - prefixTable[currIndex];
                 if(prefixTable[currIndex] > -1) {
-                    matchStart += currIndex - prefixTable[currIndex];
                     currIndex = prefixTable[currIndex];
                 } else {
                     currIndex = 0;
-                    matchStart++;
+//                    matchStart++;
                 }
             }
+            */
         }
-//        return indices;
-        return -1;
+        return indices;
     }
 }
