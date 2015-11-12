@@ -9,6 +9,7 @@ import se.dxtr.stringlibrary.Kattio;
 public class RationalArithmetic {
 
     static Kattio io = new Kattio(System.in, System.out);
+
     public static void main(String[] args) {
         int operations = io.getInt();
         for (int i = 0; i < operations; i++) {
@@ -27,6 +28,12 @@ public class RationalArithmetic {
         switch (op) {
             case "+":
                 return num1.add(num2);
+            case "-":
+                return num1.subtract(num2);
+            case "*":
+                return num1.multiply(num2);
+            case "/":
+                return num1.divide(num2);
             default:
                 return null;
         }
