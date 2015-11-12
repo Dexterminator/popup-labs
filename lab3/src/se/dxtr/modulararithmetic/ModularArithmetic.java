@@ -10,9 +10,8 @@ public class ModularArithmetic {
         while (io.hasMoreTokens()) {
             long n = io.getInt();
             int t = io.getInt();
-            if (n == 0 && t == 0) {
+            if (n == 0 && t == 0)
                 break;
-            }
             for (int i = 0; i < t; i++) {
                 long x = io.getInt();
                 String op = io.getWord();

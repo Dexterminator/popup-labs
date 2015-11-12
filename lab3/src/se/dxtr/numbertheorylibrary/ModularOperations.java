@@ -10,6 +10,9 @@ public class ModularOperations {
     }
 
     public static long subtract(long x, long y, long n) {
-        return Math.abs(x - y) % n;
+        long res = x - y;
+        while (res < 0)
+            res += n;
+        return res;
     }
 }
