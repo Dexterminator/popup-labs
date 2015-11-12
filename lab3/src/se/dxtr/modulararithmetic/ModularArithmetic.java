@@ -30,9 +30,9 @@ public class ModularArithmetic {
             case "-":
                 return ModularOperations.subtract(x, y, n);
             case "*":
-                return 0;
+                return ModularOperations.multiply(x, y, n);
             case "/":
-                return 0;
+                return ModularOperations.divide(x, y, n);
             default:
                 return 0;
         }
