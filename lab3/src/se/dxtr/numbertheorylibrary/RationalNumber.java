@@ -20,14 +20,6 @@ public class RationalNumber implements Comparable<RationalNumber> {
         this.denominator = Math.abs(denominator);
     }
 
-    public long getNumerator() {
-        return numerator;
-    }
-
-    public long getDenominator() {
-        return denominator;
-    }
-
     public RationalNumber add(RationalNumber other) {
         long numerator1 = denominator * other.numerator;
         long numerator2 = numerator * other.denominator;
