@@ -1,5 +1,7 @@
 package se.dxtr.numbertheorylibrary;
 
+import java.util.Objects;
+
 /**
  * Created by dexter on 12/11/15.
  */
@@ -51,6 +53,20 @@ public class RationalNumber {
         if (b == 0)
             return a;
         return gcd(b, a % b);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RationalNumber that = (RationalNumber) o;
+        return numerator == that.numerator &&
+                denominator == that.denominator;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numerator, denominator);
     }
 
     @Override

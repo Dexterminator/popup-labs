@@ -13,11 +13,11 @@ public class RationalArithmetic {
     public static void main(String[] args) {
         int operations = io.getInt();
         for (int i = 0; i < operations; i++) {
-            int x1 = io.getInt();
-            int y1 = io.getInt();
+            long x1 = io.getLong();
+            long y1 = io.getLong();
             String op = io.getWord();
-            int x2 = io.getInt();
-            int y2 = io.getInt();
+            long x2 = io.getLong();
+            long y2 = io.getLong();
             RationalNumber res = performOperation(new RationalNumber(x1, y1), new RationalNumber(x2, y2), op);
             io.println(res.numerator + " / " + res.denominator);
         }
