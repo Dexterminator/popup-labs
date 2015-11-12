@@ -1,4 +1,4 @@
-package se.dxtr.stringlibrary;
+package se.dxtr.numbertheorylibrary;
 
 /**
  *

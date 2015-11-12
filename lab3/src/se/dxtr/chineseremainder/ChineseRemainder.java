@@ -1,7 +1,7 @@
 package se.dxtr.chineseremainder;
 
-import se.dxtr.stringlibrary.ChineseRemainderSolution;
-import se.dxtr.stringlibrary.ChineseRemainders;
+import se.dxtr.numbertheorylibrary.ChineseRemainderSolution;
+import se.dxtr.numbertheorylibrary.ChineseRemainders;
 import se.dxtr.stringlibrary.Kattio;
 
 /**
