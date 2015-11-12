@@ -5,13 +5,27 @@ import java.util.Objects;
 /**
  * Created by dexter on 12/11/15.
  */
-public class RationalNumber {
+public class RationalNumber implements Comparable<RationalNumber> {
     final public long numerator;
     final public long denominator;
 
     public RationalNumber(long numerator, long denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
+        if (denominator < 0 && numerator < 0) {
+            this.numerator = Math.abs(numerator);
+        } else if (denominator < 0) {
+            this.numerator = -numerator;
+        } else {
+            this.numerator = numerator;
+        }
+        this.denominator = Math.abs(denominator);
+    }
+
+    public long getNumerator() {
+        return numerator;
+    }
+
+    public long getDenominator() {
+        return denominator;
     }
 
     public RationalNumber add(RationalNumber other) {
@@ -53,6 +67,13 @@ public class RationalNumber {
         if (b == 0)
             return a;
         return gcd(b, a % b);
+    }
+
+    @Override
+    public int compareTo(RationalNumber other) {
+        if (denominator != other.denominator)
+            return Long.compare(other.denominator, denominator);
+        return Long.compare(numerator, other.numerator);
     }
 
     @Override
