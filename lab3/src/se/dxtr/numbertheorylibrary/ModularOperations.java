@@ -44,9 +44,9 @@ public class ModularOperations {
     }
 
     /**
-     * Returns the multiplicative inverse a^-1 modulo n.
+     * Returns the multiplicative inverse a^-1 modulo n, found through the extended euclidian algorithm.
      */
-    private static long multiplicativeInverse(long a, long n) {
+    public static long multiplicativeInverse(long a, long n) {
         long t = 0;
         long newT = 1;
         long r = n;

@@ -5,7 +5,10 @@ import se.dxtr.numbertheorylibrary.ChineseRemainders;
 import se.dxtr.stringlibrary.Kattio;
 
 /**
- * Created by dexter on 12/11/15.
+ * Solve the chineseremainder kattis problem.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class ChineseRemainder {
     static Kattio io = new Kattio(System.in, System.out);
