@@ -14,6 +14,7 @@ public class ChineseRemainders {
     /**
      * Calculate and return the chinese remainder solution x mod K where K = mn,
      * for the system:
+     * <p>
      * x = a (mod n)
      * x = b (mod m)
      * @return a {@link ChineseRemainderSolution} containing the solution x mod K
