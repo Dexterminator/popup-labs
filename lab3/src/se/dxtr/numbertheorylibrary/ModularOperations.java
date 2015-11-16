@@ -1,15 +1,24 @@
 package se.dxtr.numbertheorylibrary;
 
 /**
- * Created by dexter on 12/11/15.
+ * Utility class providing methods for modular arithmetic.
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class ModularOperations {
     public static long IMPOSSIBLE = -1;
 
+    /**
+     * Returns the result of adding x and y modulo n.
+     */
     public static long add(long x, long y, long n) {
         return (x + y) % n;
     }
 
+    /**
+     * Returns the result of subtracting y from x modulo n.
+     */
     public static long subtract(long x, long y, long n) {
         long res = x - y;
         while (res < 0)
@@ -17,10 +26,16 @@ public class ModularOperations {
         return res;
     }
 
+    /**
+     * Returns the result of multiplying x with y modulo n.
+     */
     public static long multiply(long x, long y, long n) {
         return (x * y) % n;
     }
 
+    /**
+     * Returns the result of dividing x with y modulo n.
+     */
     public static long divide(long x, long y, long n) {
         long yInverse = multiplicativeInverse(y, n);
         if (yInverse == IMPOSSIBLE)
@@ -28,6 +43,9 @@ public class ModularOperations {
         return multiply(x, yInverse, n);
     }
 
+    /**
+     * Returns the multiplicative inverse a^-1 modulo n.
+     */
     private static long multiplicativeInverse(long a, long n) {
         long t = 0;
         long newT = 1;

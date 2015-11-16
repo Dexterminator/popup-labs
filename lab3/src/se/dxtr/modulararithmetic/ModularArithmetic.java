@@ -3,6 +3,12 @@ package se.dxtr.modulararithmetic;
 import se.dxtr.numbertheorylibrary.ModularOperations;
 import se.dxtr.stringlibrary.Kattio;
 
+/**
+ * Solve the modulararithmetic kattis problem
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
+ */
 public class ModularArithmetic {
     static Kattio io = new Kattio(System.in, System.out);
 
