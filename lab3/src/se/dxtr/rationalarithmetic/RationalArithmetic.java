@@ -4,7 +4,10 @@ import se.dxtr.numbertheorylibrary.RationalNumber;
 import se.dxtr.stringlibrary.Kattio;
 
 /**
- * Created by dexter on 12/11/15.
+ * Solve the rationalarithmetic kattis problem
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
  */
 public class RationalArithmetic {
 
