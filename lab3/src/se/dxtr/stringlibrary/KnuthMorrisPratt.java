@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Utility class to solve the stringmatching Kattis problem using the
+ * Utility class to solve the string matching problems using the
  * KMP algorithm.
  * <p>
  * Authors:
