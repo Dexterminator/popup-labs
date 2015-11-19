@@ -10,10 +10,15 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Solve the stringmatching Kattis problem
+ * <p>
+ * Authors:
+ * Dexter Gramfors, Ludvig Jansson
+ */
 public class StringMatching {
 
     static Kattio io = new Kattio (System.in, System.out);
-//    static Scanner s = new Scanner(new BufferedInputStream(System.in));
     static BufferedReader s = new BufferedReader(new InputStreamReader(System.in));
     static String pattern;
     public static void main(String[] args) {
